@@ -17,7 +17,7 @@
         android:text="Reksio" />
 
     <TextView
-        android:id="@+id/animal_availability"
+        android:id="@+id/animal_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
