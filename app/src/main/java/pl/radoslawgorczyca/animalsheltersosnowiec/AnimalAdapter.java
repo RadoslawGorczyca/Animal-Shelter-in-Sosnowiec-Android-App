@@ -47,6 +47,15 @@ public class AnimalAdapter extends ArrayAdapter<Animal> {
         ImageView animalImageView = listItemView.findViewById(R.id.animal_image);
         animalImageView.setImageResource(currentAnimal.getImageResourceId());
 
+        ImageView statusIconView = listItemView.findViewById(R.id.status_icon);
+        if(currentAnimal.getStatus() == "Kwarantanna"){
+            statusIconView.setImageResource(R.mipmap.orange_circle);
+        }else if(currentAnimal.getStatus() == "Rezerwacja"){
+            statusIconView.setImageResource(R.mipmap.red_circle);
+        }else{
+            statusIconView.setImageResource(R.mipmap.green_circle);
+        }
+
         return listItemView;
 
 
