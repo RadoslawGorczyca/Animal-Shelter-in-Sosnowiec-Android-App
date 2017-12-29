@@ -48,9 +48,9 @@ public class AnimalAdapter extends ArrayAdapter<Animal> {
         animalImageView.setImageResource(currentAnimal.getImageResourceId());
 
         ImageView statusIconView = listItemView.findViewById(R.id.status_icon);
-        if(currentAnimal.getStatus() == "Kwarantanna"){
+        if(currentAnimal.getStatus().equals("Kwarantanna")){
             statusIconView.setImageResource(R.mipmap.orange_circle);
-        }else if(currentAnimal.getStatus() == "Rezerwacja"){
+        }else if(currentAnimal.getStatus().equals("Rezerwacja")){
             statusIconView.setImageResource(R.mipmap.red_circle);
         }else{
             statusIconView.setImageResource(R.mipmap.green_circle);

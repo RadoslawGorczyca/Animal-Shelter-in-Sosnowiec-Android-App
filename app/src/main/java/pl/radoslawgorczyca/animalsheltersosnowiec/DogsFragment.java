@@ -1,11 +1,14 @@
 package pl.radoslawgorczyca.animalsheltersosnowiec;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -24,7 +27,7 @@ public class DogsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.grid_view, container, false);
 
 
-        ArrayList<Animal> dogs = new ArrayList<>();
+        final ArrayList<Animal> dogs = new ArrayList<>();
 
         dogs.add(new Animal("Reksio", "Do adopcji", R.mipmap.dog1));
         dogs.add(new Animal("Burek", "Rezerwacja", R.mipmap.dog2));
@@ -43,6 +46,22 @@ public class DogsFragment extends Fragment {
         GridView gridView = rootView.findViewById(R.id.grid_view);
 
         gridView.setAdapter(adapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Animal selectedDog = dogs.get(i);
+
+                Intent intent = new Intent(getActivity(), SingleAnimalActivity.class);
+                intent.putExtra("name", selectedDog.getName());
+                intent.putExtra("status", selectedDog.getStatus());
+                intent.putExtra("imageId", selectedDog.getImageResourceId());
+                startActivity(intent);
+            }
+        });
+
+
 
         return rootView;
     }
