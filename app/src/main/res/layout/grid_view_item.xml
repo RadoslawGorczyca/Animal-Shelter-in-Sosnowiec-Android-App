@@ -1,27 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="170dp"
-    android:layout_height="170dp">
+    android:layout_width="180dp"
+    android:layout_height="180dp">
 
     <ImageView
         android:id="@+id/animal_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/ic_launcher" />
+
+
+
+    <TextView
+        android:id="@+id/animal_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="24dp"
+        android:paddingBottom="6dp"
+        android:text="Kwarantanna"
+        android:textSize="12sp"
+        android:textColor="#AFAFAF"
+        android:background="#80000000" />
 
     <TextView
         android:id="@+id/animal_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reksio" />
+        android:layout_above="@id/animal_status"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Reksio"
+        android:paddingLeft="8dp"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:background="#80000000"/>
 
-    <TextView
-        android:id="@+id/animal_availability"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/status_icon"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@mipmap/green_circle"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Kwarantanna" />
+        android:layout_marginLeft="18dp"
+        android:layout_marginBottom="17dp"/>
+
+
 
 </RelativeLayout>
