@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <string-array name="array_gender_options">
+        <item>@string/gender_unknown</item>
+        <item>@string/gender_male</item>
+        <item>@string/gender_female</item>
+    </string-array>
+
+    <string-array name="array_species_options">
+        <item>@string/species_dog</item>
+        <item>@string/species_cat</item>
+    </string-array>
+    
+    <string-array name="array_status_options">
+        <item>@string/status_adoptable</item>
+        <item>@string/status_quarantine</item>
+        <item>@string/status_booked</item>
+    </string-array>
+
+    <string-array name="array_height_options">
+        <item>@string/height_small</item>
+        <item>@string/height_medium</item>
+        <item>@string/height_big</item>
+    </string-array>
+
+</resources>
