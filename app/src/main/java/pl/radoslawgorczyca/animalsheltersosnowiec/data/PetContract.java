@@ -10,7 +10,8 @@ import android.provider.BaseColumns;
 
 public class PetContract {
 
-    private PetContract(){}
+    private PetContract() {
+    }
 
     public static final String CONTENT_AUTHORITY = "pl.radoslawgorczyca.animalsheltersosnowiec";
 
@@ -32,11 +33,13 @@ public class PetContract {
 
         public final static String _ID = BaseColumns._ID;
 
+        public final static String COLUMN_PET_SPECIES = "species";
+
         public final static String COLUMN_PET_CODE = "code";
 
         public final static String COLUMN_PET_STATUS = "status";
 
-        public final static String COLUMN_PET_NAME ="name";
+        public final static String COLUMN_PET_NAME = "name";
 
         public final static String COLUMN_PET_BREED = "breed";
 
@@ -46,31 +49,35 @@ public class PetContract {
 
         public final static String COLUMN_PET_SUMMARY = "summary";
 
+        public static final int SPECIES_DOG = 1;
+        public static final int SPECIES_CAT = 2;
+
         public static final int GENDER_UNKNOWN = 0;
         public static final int GENDER_MALE = 1;
         public static final int GENDER_FEMALE = 2;
 
-        public static final int STATUS_UNKNOWN = 0;
         public static final int STATUS_ADOPTABLE = 1;
         public static final int STATUS_QUARANTINE = 2;
         public static final int STATUS_BOOKED = 3;
 
-        public static final int HEIGHT_UNKNOWN = 0;
         public static final int HEIGHT_SMALL = 1;
         public static final int HEIGHT_MEDIUM = 2;
         public static final int HEIGHT_BIG = 3;
 
+        public static boolean isValidSpecies(int species) {
+            return species == SPECIES_DOG || species == SPECIES_CAT;
+        }
 
         public static boolean isValidGender(int gender) {
             return gender == GENDER_UNKNOWN || gender == GENDER_MALE || gender == GENDER_FEMALE;
         }
 
         public static boolean isValidStatus(int status) {
-            return status == STATUS_UNKNOWN || status == STATUS_ADOPTABLE || status == STATUS_QUARANTINE || status == STATUS_BOOKED;
+            return status == STATUS_ADOPTABLE || status == STATUS_QUARANTINE || status == STATUS_BOOKED;
         }
 
         public static boolean isValidHeight(int height) {
-            return height == HEIGHT_UNKNOWN || height == HEIGHT_SMALL || height == HEIGHT_MEDIUM || height == HEIGHT_BIG;
+            return height == HEIGHT_SMALL || height == HEIGHT_MEDIUM || height == HEIGHT_BIG;
         }
     }
 }
