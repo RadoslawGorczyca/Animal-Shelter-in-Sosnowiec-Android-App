@@ -29,6 +29,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+        <provider
+            android:name=".data.PetProvider"
+            android:authorities="pl.radoslawgorczyca.animalsheltersosnowiec"
+            android:exported="false" />
     </application>
 
 </manifest>
