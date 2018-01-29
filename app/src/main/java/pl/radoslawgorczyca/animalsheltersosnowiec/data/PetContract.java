@@ -18,6 +18,9 @@ public class PetContract {
     public static final String SHELTER_REQUEST_URL =
             "http://gorczyca.org/schronisko-sosnowiec/getJson.php";
 
+    public static final String SHELTER_POST_URL =
+            "http://gorczyca.org/schronisko-sosnowiec/insertData.php";
+
 
 
 

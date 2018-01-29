@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,18 +24,26 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
+import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract.PetEntry;
 
 /**
  * Created by Radek on 09-Jan-18.
  */
 
-public class EditorActivity extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Pet> {
 
     private static final int EXISTING_PET_LOADER = 0;
 
+    LoaderManager loaderManager;
+
     private Uri mCurrentPetUri;
 
+    private Pet mPet;
 
     private Spinner mSpeciesSpinner;
     private Spinner mGenderSpinner;
@@ -88,6 +98,8 @@ public class EditorActivity extends AppCompatActivity {
         mNameEditText = findViewById(R.id.edit_pet_name);
         mBreedEditText = findViewById(R.id.edit_pet_breed);
         mSummaryEditText = findViewById(R.id.edit_pet_summary);
+
+        loaderManager = getSupportLoaderManager();
     }
 
     private void setupSpinners() {
@@ -216,7 +228,7 @@ public class EditorActivity extends AppCompatActivity {
             return;
         }
 
-        ContentValues values = new ContentValues();
+        /*ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_SPECIES, mSpecies);
         values.put(PetEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetEntry.COLUMN_PET_HEIGHT, mHeight);
@@ -224,25 +236,20 @@ public class EditorActivity extends AppCompatActivity {
         values.put(PetEntry.COLUMN_PET_CODE, codeString);
         values.put(PetEntry.COLUMN_PET_NAME, nameString);
         values.put(PetEntry.COLUMN_PET_BREED, breedString);
-        values.put(PetEntry.COLUMN_PET_SUMMARY, summaryString);
+        values.put(PetEntry.COLUMN_PET_SUMMARY, summaryString);*/
+
+        mPet = new Pet(0, mSpecies, mStatus, codeString, nameString, mGender, breedString, null);
 
         // Determine if this is a new or existing pet by checking if mCurrentPetUri is null or not
         if (mCurrentPetUri == null) {
             // This is a NEW pet, so insert a new pet into the provider,
             // returning the content URI for the new pet.
-            Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+            //Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
 
-            // Show a toast message depending on whether or not the insertion was successful.
-            if (newUri == null) {
-                // If the new content URI is null, then there was an error with insertion.
-                Toast.makeText(this, getString(R.string.editor_insert_pet_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the insertion was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else {
+            loaderManager.initLoader(2, null, this);
+
+
+        /*} else {
             // Otherwise this is an EXISTING pet, so update the pet with content URI: mCurrentPetUri
             // and pass in the new ContentValues. Pass in null for the selection and selection args
             // because mCurrentPetUri will already identify the correct row in the database that
@@ -258,7 +265,7 @@ public class EditorActivity extends AppCompatActivity {
                 // Otherwise, the update was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_update_pet_successful),
                         Toast.LENGTH_SHORT).show();
-            }
+            }*/
         }
 
     }
@@ -281,11 +288,42 @@ public class EditorActivity extends AppCompatActivity {
                 // Save pet to database
                 savePet();
                 // Exit activity
-                finish();
+                //finish();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public Loader<Pet> onCreateLoader(int id, Bundle args) {
+        if(android.os.Debug.isDebuggerConnected())
+            android.os.Debug.waitForDebugger();
+        Uri baseUri = Uri.parse(PetContract.SHELTER_POST_URL);
+        return new PetPostLoader(this, baseUri.toString(), mPet);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Pet> loader, Pet addedPet) {
+        if(android.os.Debug.isDebuggerConnected())
+            android.os.Debug.waitForDebugger();
+        mPet = addedPet;
+        // Show a toast message depending on whether or not the insertion was successful.
+        if (mPet.getmId() == 0) {
+            // If the new content URI is null, then there was an error with insertion.
+            Toast.makeText(this, getString(R.string.editor_insert_pet_failed),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            // Otherwise, the insertion was successful and we can display a toast.
+            Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
+                    Toast.LENGTH_SHORT).show();
+        }
+        finish();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Pet> loader) {
+
+    }
 }

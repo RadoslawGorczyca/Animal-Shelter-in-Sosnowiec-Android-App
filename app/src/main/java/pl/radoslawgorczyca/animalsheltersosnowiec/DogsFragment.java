@@ -54,20 +54,6 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
         View rootView = inflater.inflate(R.layout.grid_view, container, false);
 
 /*
-
-        final ArrayList<Animal> dogs = new ArrayList<>();
-
-        dogs.add(new Animal("Reksio", "Do adopcji", R.mipmap.dog1));
-        dogs.add(new Animal("Burek", "Rezerwacja", R.mipmap.dog2));
-        dogs.add(new Animal("Azor", "Do adopcji", R.mipmap.dog3));
-        dogs.add(new Animal("Max", "Kwarantanna", R.mipmap.dog4));
-        dogs.add(new Animal("Dyzio", "Do adopcji", R.mipmap.dog5));
-        dogs.add(new Animal("Lessi", "Do adopcji", R.mipmap.dog6));
-        dogs.add(new Animal("Lucek", "Rezerwacja", R.mipmap.dog7));
-        dogs.add(new Animal("Pysia", "Do adopcji", R.mipmap.dog8));
-        dogs.add(new Animal("Luna", "Kwarantanna", R.mipmap.dog9));
-        dogs.add(new Animal("Foxy", "Rezerwacja", R.mipmap.dog10));
-
         AnimalAdapter adapter =
                 new AnimalAdapter(getActivity(), dogs);
 
@@ -90,10 +76,6 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
         });
 */
 
-//        GridView petGridView = rootView.findViewById(R.id.grid_view);
-//        mCursorAdapter = new PetCursorAdapter(getActivity(), null);
-//        petGridView.setAdapter(mCursorAdapter);
-//        getLoaderManager().initLoader(PET_LOADER, null, this);
 
         GridView petGridView = rootView.findViewById(R.id.grid_view);
         mAdapter = new PetAdapter(getActivity(), new ArrayList<Pet>());

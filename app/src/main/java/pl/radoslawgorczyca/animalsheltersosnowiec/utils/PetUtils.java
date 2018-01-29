@@ -2,6 +2,7 @@ package pl.radoslawgorczyca.animalsheltersosnowiec.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -22,6 +23,7 @@ import java.util.List;
 
 import pl.radoslawgorczyca.animalsheltersosnowiec.Animal;
 import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
 
 /**
  * Created by Radek on 24-Jan-18.
@@ -41,7 +43,8 @@ public final class PetUtils {
 
 
     public static List<Pet> fetchPetData(String requestURL) {
-
+        if(android.os.Debug.isDebuggerConnected())
+            android.os.Debug.waitForDebugger();
         URL url = createUrl(requestURL);
 
         String jsonResponse = null;
@@ -161,7 +164,58 @@ public final class PetUtils {
         return pets;
     }
 
-    public static Bitmap LoadImageFromWebOperations(String url) {
+    public static void pushDataToDatabase(String requestUrl, Pet newPet){
+        if(android.os.Debug.isDebuggerConnected())
+            android.os.Debug.waitForDebugger();
+        URL url = createUrlWithParams(requestUrl, newPet);
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.connect();
+
+            if (urlConnection.getResponseCode() == 200) {
+                Log.e(LOG_TAG, "Success response code: " + urlConnection.getResponseCode());
+            } else {
+                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
+            }
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem parsing data to database", e);
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+
+    }
+
+    private static URL createUrlWithParams(String requestUrl, Pet pet){
+
+        Uri uri = Uri.parse(requestUrl);
+        Uri.Builder builder = uri.buildUpon();
+        builder
+                .appendQueryParameter("species", String.valueOf(pet.getmSpecies()))
+                .appendQueryParameter("status", String.valueOf(pet.getmStatus()))
+                .appendQueryParameter("code", pet.getmCode())
+                .appendQueryParameter("name", pet.getmName())
+                .appendQueryParameter("gender", String.valueOf(pet.getmGender()))
+                .appendQueryParameter("breed", pet.getmBreed());
+
+        URL url = null;
+        try{
+            url = new URL(builder.build().toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+
+    private static Bitmap LoadImageFromWebOperations(String url) {
         try {
             Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
             return bitmap;
