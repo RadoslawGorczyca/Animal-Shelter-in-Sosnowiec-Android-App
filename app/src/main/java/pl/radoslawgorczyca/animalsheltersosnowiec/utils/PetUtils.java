@@ -1,5 +1,7 @@
 package pl.radoslawgorczyca.animalsheltersosnowiec.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -140,7 +142,8 @@ public final class PetUtils {
                 String name = petJSON.getString("name");
                 int gender = petJSON.getInt("gender");
                 String breed = petJSON.getString("breed");
-                String image = petJSON.getString("image");
+                String imageUrl = petJSON.getString("image");
+                Bitmap image = LoadImageFromWebOperations(imageUrl);
 
                 Pet pet = new Pet(id, species, status, code, name, gender, breed, image);
                 pets.add(pet);
@@ -156,6 +159,19 @@ public final class PetUtils {
 
         // Return the list of pets
         return pets;
+    }
+
+    public static Bitmap LoadImageFromWebOperations(String url) {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
+            return bitmap;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

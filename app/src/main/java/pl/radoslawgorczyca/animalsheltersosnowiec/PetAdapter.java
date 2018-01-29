@@ -26,7 +26,9 @@ import java.util.ArrayList;
  * Created by Radek on 24-Jan-18.
  */
 
-public class PetAdapter extends ArrayAdapter<Pet>{
+public class PetAdapter extends ArrayAdapter<Pet> {
+
+    private String mImageString;
 
     public PetAdapter(@NonNull Context context, ArrayList<Pet> pets) {
         super(context, 0, pets);
@@ -51,9 +53,7 @@ public class PetAdapter extends ArrayAdapter<Pet>{
 
         ImageView animalImageView = listItemView.findViewById(R.id.animal_image);
         //animalImageView.setImageResource(currentPet.getmImageResourceId());
-        if (currentPet.getmImage() != null) {
-            animalImageView.setImageBitmap(LoadImageFromWebOperations(currentPet.getmImage()));
-        }
+        animalImageView.setImageBitmap(currentPet.getmImage());
 
         ImageView statusIconView = listItemView.findViewById(R.id.status_icon);
         if (currentPet.getmStatus() == 2) {
@@ -66,19 +66,6 @@ public class PetAdapter extends ArrayAdapter<Pet>{
 
         return listItemView;
 
-    }
-
-    public static Bitmap LoadImageFromWebOperations(String url) {
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
-            return bitmap;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
 }

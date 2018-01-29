@@ -1,5 +1,7 @@
 package pl.radoslawgorczyca.animalsheltersosnowiec;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Radek on 24-Jan-18.
  */
@@ -13,9 +15,9 @@ public class Pet {
     private String mName;
     private int mGender;
     private String mBreed;
-    private String mImage;
+    private Bitmap mImage;
 
-    public Pet(double mId, int mSpecies, int mStatus, String mCode, String mName, int mGender, String mBreed, String mImage) {
+    public Pet(double mId, int mSpecies, int mStatus, String mCode, String mName, int mGender, String mBreed, Bitmap mImage) {
         this.mId = mId;
         this.mSpecies = mSpecies;
         this.mStatus = mStatus;
@@ -26,11 +28,11 @@ public class Pet {
         this.mImage = mImage;
     }
 
-    public String getmImage() {
+    public Bitmap getmImage() {
         return mImage;
     }
 
-    public void setmImage(String mImage) {
+    public void setmImage(Bitmap mImage) {
         this.mImage = mImage;
     }
 

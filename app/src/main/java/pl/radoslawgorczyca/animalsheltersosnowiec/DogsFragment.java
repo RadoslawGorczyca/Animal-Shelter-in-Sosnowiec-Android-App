@@ -8,6 +8,7 @@ import android.content.Intent;
 
 
 import android.content.Loader;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
@@ -26,6 +27,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,13 +101,6 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
         getLoaderManager().initLoader(PET_LOADER, null, this);
 
 
-/*        AsyncTaskLoader<List<Pet>> mAsyncTaskLoader = new AsyncTaskLoader<List<Pet>>() {
-            @Override
-            public List<Pet> loadInBackground() {
-                return PetUtils.fetchPetData(PetContract.SHELTER_REQUEST_URL);
-            }
-        }*/
-
         return rootView;
     }
 
@@ -128,77 +124,5 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onLoaderReset(android.support.v4.content.Loader<List<Pet>> loader) {
         mAdapter.clear();
     }
-
-//    @Override
-//    public Loader onCreateLoader(int i, Bundle bundle) {
-//        Uri baseUri = Uri.parse(PetContract.SHELTER_REQUEST_URL);
-//        return new PetLoader(getActivity(), baseUri.toString());
-//    }
-
-    /*    @Override
-    public PetLoader onCreateLoader(int id, Bundle args) {
-        Uri baseUri = Uri.parse(PetContract.SHELTER_REQUEST_URL);
-        return new PetLoader(getActivity(), baseUri.toString());
-    }
-
-    @Override
-    public void onLoadFinished(android.support.v4.content.Loader<List<Pet>> loader, List<Pet> pets) {
-        mAdapter.clear();
-
-        if (pets != null && !pets.isEmpty()) {
-            mAdapter.addAll(pets);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(android.support.v4.content.Loader<List<Pet>> loader) {
-        mAdapter.clear();
-    }*/
-
-/*    @Override
-    protected void onStartLoading() {
-        forceLoad();
-    }
-
-
-
-    @Override
-    public List<Pet> loadInBackground() {
-//        if(PetContract.SHELTER_REQUEST_URL == null){
-//            return null;
-//        }
-
-        return PetUtils.fetchPetData(PetContract.SHELTER_REQUEST_URL);
-    }*/
-
-
-    /*    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        // Define a projection that specifies the columns from the table we care about.
-        String[] projection = {
-                PetEntry._ID,
-                PetEntry.COLUMN_PET_NAME,
-                PetEntry.COLUMN_PET_STATUS};
-
-        // This loader will execute the ContentProvider's query method on a background thread
-        return new CursorLoader(getActivity(),   // Parent activity context
-                PetEntry.CONTENT_URI,   // Provider content URI to query
-                projection,             // Columns to include in the resulting Cursor
-                null,                   // No selection clause
-                null,                   // No selection arguments
-                null);                  // Default sort order
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // Update {@link PetCursorAdapter} with this new cursor containing updated pet data
-        mCursorAdapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // Callback called when the data needs to be deleted
-        mCursorAdapter.swapCursor(null);
-    }*/
 
 }
