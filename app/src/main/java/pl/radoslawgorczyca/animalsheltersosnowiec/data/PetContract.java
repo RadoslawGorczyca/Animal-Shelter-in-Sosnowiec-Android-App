@@ -13,6 +13,14 @@ public class PetContract {
     private PetContract() {
     }
 
+    public static final int PET_LOADER_ID = 1;
+
+    public static final String SHELTER_REQUEST_URL =
+            "http://gorczyca.org/schronisko-sosnowiec/getJson.php";
+
+
+
+
     public static final String CONTENT_AUTHORITY = "pl.radoslawgorczyca.animalsheltersosnowiec";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
