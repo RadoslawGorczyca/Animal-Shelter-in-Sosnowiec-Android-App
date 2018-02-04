@@ -3,9 +3,8 @@
     android:id="@+id/grid_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnWidth="180dp"
-    android:numColumns="auto_fit"
+    android:numColumns="2"
     android:stretchMode="columnWidth"
-    android:gravity="center">
+    android:gravity="fill">
 
 </GridView>

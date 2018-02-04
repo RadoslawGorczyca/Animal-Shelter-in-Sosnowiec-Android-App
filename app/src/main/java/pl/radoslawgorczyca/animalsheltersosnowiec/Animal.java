@@ -12,6 +12,8 @@ public class Animal {
 
     private int mImageResourceId;
 
+
+
     public Animal(String name, String status, int imageResourceId){
         mName = name;
         mStatus = status;
