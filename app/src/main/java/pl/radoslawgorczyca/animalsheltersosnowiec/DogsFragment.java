@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,41 +47,28 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private PetAdapter mAdapter;
 
-    PetCursorAdapter mCursorAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.grid_view, container, false);
 
-/*
-        AnimalAdapter adapter =
-                new AnimalAdapter(getActivity(), dogs);
-
-        GridView gridView = rootView.findViewById(R.id.grid_view);
-
-        gridView.setAdapter(adapter);
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Animal selectedDog = dogs.get(i);
-
-                Intent intent = new Intent(getActivity(), SingleAnimalActivity.class);
-                intent.putExtra("name", selectedDog.getName());
-                intent.putExtra("status", selectedDog.getStatus());
-                intent.putExtra("imageId", selectedDog.getImageResourceId());
-                startActivity(intent);
-            }
-        });
-*/
-
-
         GridView petGridView = rootView.findViewById(R.id.grid_view);
         mAdapter = new PetAdapter(getActivity(), new ArrayList<Pet>());
         petGridView.setAdapter(mAdapter);
         getLoaderManager().initLoader(PET_LOADER, null, this);
+
+        petGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Pet selectedPet = mAdapter.getItem(i);
+
+                Intent intent = new Intent(getActivity(), SinglePetActivity.class);
+                intent.putExtra("currentPet", selectedPet);
+                startActivity(intent);
+            }
+        });
 
 
         return rootView;
@@ -98,7 +86,13 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
         mAdapter.clear();
 
         if (pets != null && !pets.isEmpty()) {
-            mAdapter.addAll(pets);
+
+
+            for (int i = 0; i < pets.size(); i++) {
+                if (pets.get(i).getmSpecies() == PetEntry.SPECIES_DOG) {
+                    mAdapter.add(pets.get(i));
+                }
+            }
         }
     }
 

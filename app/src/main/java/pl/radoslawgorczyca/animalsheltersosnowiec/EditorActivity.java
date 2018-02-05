@@ -56,7 +56,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mSummaryEditText;
 
     private int mSpecies = PetEntry.SPECIES_DOG;
-    private int mGender = PetEntry.GENDER_UNKNOWN;
+    private int mGender = PetEntry.GENDER_MALE;
     private int mHeight = PetEntry.HEIGHT_SMALL;
     private int mStatus = PetEntry.STATUS_ADOPTABLE;
 
@@ -157,10 +157,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.gender_male))) {
                         mGender = PetEntry.GENDER_MALE;
-                    } else if (selection.equals(getString(R.string.gender_female))) {
-                        mGender = PetEntry.GENDER_FEMALE;
                     } else {
-                        mGender = PetEntry.GENDER_UNKNOWN;
+                        mGender = PetEntry.GENDER_FEMALE;
                     }
                 }
             }
@@ -168,7 +166,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Because AdapterView is an abstract class, onNothingSelected must be defined
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mGender = PetEntry.GENDER_UNKNOWN;
+                mGender = PetEntry.GENDER_MALE;
             }
         });
 
@@ -238,7 +236,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(PetEntry.COLUMN_PET_BREED, breedString);
         values.put(PetEntry.COLUMN_PET_SUMMARY, summaryString);*/
 
-        mPet = new Pet(0, mSpecies, mStatus, codeString, nameString, mGender, breedString, null);
+        //mPet = new Pet(0, mSpecies, mStatus, codeString, nameString, mGender, breedString, null);
 
         // Determine if this is a new or existing pet by checking if mCurrentPetUri is null or not
         if (mCurrentPetUri == null) {

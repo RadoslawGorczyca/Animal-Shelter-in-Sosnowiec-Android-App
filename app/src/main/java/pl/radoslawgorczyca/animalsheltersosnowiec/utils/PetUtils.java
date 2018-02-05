@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,6 +25,7 @@ import java.util.List;
 import pl.radoslawgorczyca.animalsheltersosnowiec.Animal;
 import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
+import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract.PetEntry;
 
 /**
  * Created by Radek on 24-Jan-18.
@@ -140,15 +142,22 @@ public final class PetUtils {
 
                 double id = petJSON.getDouble("idPet");
                 int species = petJSON.getInt("species");
-                int status = petJSON.getInt("status");
                 String code = petJSON.getString("code");
                 String name = petJSON.getString("name");
+                int status = petJSON.getInt("status");
                 int gender = petJSON.getInt("gender");
-                String breed = petJSON.getString("breed");
+                int height = petJSON.getInt("height");
+                String birthYear = petJSON.getString("birthYear");
+                String acceptanceDate = petJSON.getString("acceptanceDate");
+                int sterilized = petJSON.getInt("sterilized");
+                String summary = petJSON.getString("summary");
                 String imageUrl = petJSON.getString("image");
-                Bitmap image = LoadImageFromWebOperations(imageUrl);
+                byte[] imageBlob = LoadImageFromWebOperations(imageUrl);
+                String breed = petJSON.getString("breed");
+                String contactNumber = petJSON.getString("contactNumber");
 
-                Pet pet = new Pet(id, species, status, code, name, gender, breed, image);
+                Pet pet = new Pet(id, species, code, name, status, gender, height, birthYear,
+                        acceptanceDate, sterilized, summary, imageBlob, breed, contactNumber);
                 pets.add(pet);
             }
 
@@ -194,6 +203,7 @@ public final class PetUtils {
 
     private static URL createUrlWithParams(String requestUrl, Pet pet){
 
+        //TODO Popraw Uri builder dla dodawania zwierząt do bazy
         Uri uri = Uri.parse(requestUrl);
         Uri.Builder builder = uri.buildUpon();
         builder
@@ -215,10 +225,15 @@ public final class PetUtils {
     }
 
 
-    private static Bitmap LoadImageFromWebOperations(String url) {
+    private static byte[] LoadImageFromWebOperations(String url) {
         try {
             Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
-            return bitmap;
+            //return bitmap;
+
+            ByteArrayOutputStream blob = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /* Ignored for PNGs */, blob);
+            return blob.toByteArray();
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

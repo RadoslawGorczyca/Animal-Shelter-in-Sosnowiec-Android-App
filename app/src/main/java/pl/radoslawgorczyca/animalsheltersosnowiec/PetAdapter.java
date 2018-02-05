@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**
@@ -45,15 +46,23 @@ public class PetAdapter extends ArrayAdapter<Pet> {
 
         Pet currentPet = getItem(position);
 
+
         TextView animalNameTextView = listItemView.findViewById(R.id.animal_name);
         animalNameTextView.setText(currentPet.getmName());
 
         TextView animalStatusTextView = listItemView.findViewById(R.id.animal_status);
-        animalStatusTextView.setText(String.valueOf(currentPet.getmStatus()));
+        //animalStatusTextView.setText(String.valueOf(currentPet.getmStatus()));
+        if (currentPet.getmStatus() == 2) {
+            animalStatusTextView.setText(R.string.status_quarantine);
+        } else if (currentPet.getmStatus() == 3) {
+            animalStatusTextView.setText(R.string.status_booked);
+        } else {
+            animalStatusTextView.setText(R.string.status_adoptable);
+        }
 
         ImageView animalImageView = listItemView.findViewById(R.id.animal_image);
         //animalImageView.setImageResource(currentPet.getmImageResourceId());
-        animalImageView.setImageBitmap(currentPet.getmImage());
+        animalImageView.setImageBitmap(decodeBlobToBitmap(currentPet.getmImageBlob()));
 
         ImageView statusIconView = listItemView.findViewById(R.id.status_icon);
         if (currentPet.getmStatus() == 2) {
@@ -66,6 +75,19 @@ public class PetAdapter extends ArrayAdapter<Pet> {
 
         return listItemView;
 
+    }
+
+    public void updateData(ArrayList<Pet> list){
+
+    }
+
+    private Bitmap decodeBlobToBitmap(byte[] imageBlob) {
+
+        if(imageBlob != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBlob, 0, imageBlob.length);
+            return bitmap;
+        }
+        return null;
     }
 
 }

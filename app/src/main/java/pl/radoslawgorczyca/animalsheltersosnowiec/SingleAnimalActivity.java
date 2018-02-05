@@ -10,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by Radek on 18-Dec-17.
  */
@@ -21,7 +19,7 @@ public class SingleAnimalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.single_animal_layout);
+        setContentView(R.layout.single_pet_layout);
 
         final Intent intent = getIntent();
 
@@ -33,18 +31,18 @@ public class SingleAnimalActivity extends AppCompatActivity {
         TextView status = findViewById(R.id.single_animal_status);
         status.setText(animalStatusString);
 
-        Button reservationButton = findViewById(R.id.reservation);
+        //Button reservationButton = findViewById(R.id.reservation);
         ImageView statusIcon = findViewById(R.id.single_animal_status_icon);
 
         if(animalStatusString.equals("Kwarantanna")){
             statusIcon.setImageResource(R.mipmap.orange_circle);
-            reservationButton.setEnabled(false);
+            //reservationButton.setEnabled(false);
         }else if(animalStatusString.equals("Rezerwacja")){
             statusIcon.setImageResource(R.mipmap.red_circle);
-            reservationButton.setEnabled(false);
+            //reservationButton.setEnabled(false);
         }else{
             statusIcon.setImageResource(R.mipmap.green_circle);
-            reservationButton.setEnabled(true);
+            //reservationButton.setEnabled(true);
         }
 
         ImageView animalImage = findViewById(R.id.single_animal_image);
@@ -62,12 +60,12 @@ public class SingleAnimalActivity extends AppCompatActivity {
             }
         });
 
-        reservationButton.setOnClickListener(new View.OnClickListener() {
+        /*reservationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Brak połączenia z serwerem. Spróbuj później.", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
     }
 }

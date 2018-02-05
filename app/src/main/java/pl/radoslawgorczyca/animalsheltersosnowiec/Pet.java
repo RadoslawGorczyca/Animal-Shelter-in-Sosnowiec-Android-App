@@ -2,38 +2,103 @@ package pl.radoslawgorczyca.animalsheltersosnowiec;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by Radek on 24-Jan-18.
  */
 
-public class Pet {
+public class Pet implements Serializable {
 
     private double mId;
     private int mSpecies;
-    private int mStatus;
     private String mCode;
     private String mName;
+    private int mStatus;
     private int mGender;
+    private int mHeight;
+    private String mBirthYear;
+    private String mAcceptanceDate;
+    private int mSterilized;
+    private String mSummary;
+    private byte[] mImageBlob;
     private String mBreed;
-    private Bitmap mImage;
+    private String mContactNumber;
 
-    public Pet(double mId, int mSpecies, int mStatus, String mCode, String mName, int mGender, String mBreed, Bitmap mImage) {
+    public Pet(double mId, int mSpecies, String mCode, String mName, int mStatus,
+               int mGender, int mHeight, String mBirthYear, String mAcceptanceDate,
+               int mSterilized, String mSummary, byte[] mImageBlob, String mBreed, String mContactNumber) {
         this.mId = mId;
         this.mSpecies = mSpecies;
-        this.mStatus = mStatus;
         this.mCode = mCode;
         this.mName = mName;
+        this.mStatus = mStatus;
         this.mGender = mGender;
+        this.mHeight = mHeight;
+        this.mBirthYear = mBirthYear;
+        this.mAcceptanceDate = mAcceptanceDate;
+        this.mSterilized = mSterilized;
+        this.mSummary = mSummary;
+        this.mImageBlob = mImageBlob;
         this.mBreed = mBreed;
-        this.mImage = mImage;
+        this.mContactNumber = mContactNumber;
+
     }
 
-    public Bitmap getmImage() {
-        return mImage;
+    public String getmContactNumber() {
+        return mContactNumber;
     }
 
-    public void setmImage(Bitmap mImage) {
-        this.mImage = mImage;
+    public void setmContactNumber(String mContactNumber) {
+        this.mContactNumber = mContactNumber;
+    }
+
+    public int getmHeight() {
+        return mHeight;
+    }
+
+    public void setmHeight(int mHeight) {
+        this.mHeight = mHeight;
+    }
+
+    public String getmBirthYear() {
+        return mBirthYear;
+    }
+
+    public void setmBirthYear(String mBirthYear) {
+        this.mBirthYear = mBirthYear;
+    }
+
+    public String getmAcceptanceDate() {
+        return mAcceptanceDate;
+    }
+
+    public void setmAcceptanceDate(String mAcceptanceDate) {
+        this.mAcceptanceDate = mAcceptanceDate;
+    }
+
+    public int getmSterilized() {
+        return mSterilized;
+    }
+
+    public void setmSterilized(int mSterilized) {
+        this.mSterilized = mSterilized;
+    }
+
+    public String getmSummary() {
+        return mSummary;
+    }
+
+    public void setmSummary(String mSummary) {
+        this.mSummary = mSummary;
+    }
+
+    public byte[] getmImageBlob() {
+        return mImageBlob;
+    }
+
+    public void setmImageBlob(byte[] mImageBlob) {
+        this.mImageBlob = mImageBlob;
     }
 
     public double getmId() {

@@ -29,6 +29,17 @@
     <string name="editor_insert_pet_successful">Pet saved</string>
     <string name="editor_update_pet_failed">Error with updating pet</string>
     <string name="editor_update_pet_successful">Pet updated</string>
+    <string name="reservation">Reservation</string>
+    <string name="contact_with_keeper">Contact with keeper</string>
+    <string name="gender">Gender</string>
+    <string name="height">Height</string>
+    <string name="birth_year">Birth year</string>
+    <string name="acceptance_date">Acceptance date</string>
+    <string name="sterilized">Sterilized</string>
+    <string name="summary">Summary</string>
+    <string name="castrated">Castrated</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
 </resources>

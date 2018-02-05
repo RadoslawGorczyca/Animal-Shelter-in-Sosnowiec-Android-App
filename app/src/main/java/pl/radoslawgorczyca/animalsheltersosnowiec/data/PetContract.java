@@ -48,39 +48,51 @@ public class PetContract {
 
         public final static String COLUMN_PET_CODE = "code";
 
-        public final static String COLUMN_PET_STATUS = "status";
-
         public final static String COLUMN_PET_NAME = "name";
 
-        public final static String COLUMN_PET_BREED = "breed";
+        public final static String COLUMN_PET_STATUS = "status";
 
         public final static String COLUMN_PET_GENDER = "gender";
 
         public final static String COLUMN_PET_HEIGHT = "height";
 
+        public final static String COLUMN_PET_BIRTHYEAR = "birthYear";
+
+        public final static String COLUMN_PET_ACCEPTANCEDATE = "acceptanceDate";
+
+        public final static String COLUMN_PET_STERILIZED = "sterilized";
+
         public final static String COLUMN_PET_SUMMARY = "summary";
+
+        public final static String COLUMN_PET_IMAGE = "image";
+
+        public final static String COLUMN_PET_BREED = "breed";
+
+        public final static String COLUMN_PET_CONTACTNUMBER = "contactNumber";
 
         public static final int SPECIES_DOG = 1;
         public static final int SPECIES_CAT = 2;
-
-        public static final int GENDER_UNKNOWN = 0;
-        public static final int GENDER_MALE = 1;
-        public static final int GENDER_FEMALE = 2;
 
         public static final int STATUS_ADOPTABLE = 1;
         public static final int STATUS_QUARANTINE = 2;
         public static final int STATUS_BOOKED = 3;
 
+        public static final int GENDER_MALE = 1;
+        public static final int GENDER_FEMALE = 2;
+
         public static final int HEIGHT_SMALL = 1;
         public static final int HEIGHT_MEDIUM = 2;
         public static final int HEIGHT_BIG = 3;
+
+        public static final int STERILIZED_YES = 1;
+        public static final int STERILIZED_NO = 2;
 
         public static boolean isValidSpecies(int species) {
             return species == SPECIES_DOG || species == SPECIES_CAT;
         }
 
         public static boolean isValidGender(int gender) {
-            return gender == GENDER_UNKNOWN || gender == GENDER_MALE || gender == GENDER_FEMALE;
+            return gender == GENDER_MALE || gender == GENDER_FEMALE;
         }
 
         public static boolean isValidStatus(int status) {
@@ -89,6 +101,10 @@ public class PetContract {
 
         public static boolean isValidHeight(int height) {
             return height == HEIGHT_SMALL || height == HEIGHT_MEDIUM || height == HEIGHT_BIG;
+        }
+
+        public static boolean isValidSterilized(int sterilized) {
+            return sterilized == STERILIZED_YES || sterilized == STERILIZED_NO;
         }
     }
 }
