@@ -12,15 +12,20 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import pl.radoslawgorczyca.animalsheltersosnowiec.Animal;
 import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
@@ -45,7 +50,7 @@ public final class PetUtils {
 
 
     public static List<Pet> fetchPetData(String requestURL) {
-        if(android.os.Debug.isDebuggerConnected())
+        if (android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
         URL url = createUrl(requestURL);
 
@@ -88,6 +93,9 @@ public final class PetUtils {
             if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
                 jsonresponse = readFromStream(inputStream);
+            } else if (urlConnection.getResponseCode() == 408) {
+                urlConnection.disconnect();
+                urlConnection.connect();
             } else {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
@@ -173,8 +181,8 @@ public final class PetUtils {
         return pets;
     }
 
-    public static void pushDataToDatabase(String requestUrl, Pet newPet){
-        if(android.os.Debug.isDebuggerConnected())
+    public static void pushDataToDatabase(String requestUrl, Pet newPet) {
+        if (android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
         URL url = createUrlWithParams(requestUrl, newPet);
 
@@ -188,6 +196,9 @@ public final class PetUtils {
 
             if (urlConnection.getResponseCode() == 200) {
                 Log.e(LOG_TAG, "Success response code: " + urlConnection.getResponseCode());
+            } else if (urlConnection.getResponseCode() == 408) {
+                urlConnection.disconnect();
+                urlConnection.connect();
             } else {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
@@ -201,7 +212,7 @@ public final class PetUtils {
 
     }
 
-    private static URL createUrlWithParams(String requestUrl, Pet pet){
+    private static URL createUrlWithParams(String requestUrl, Pet pet) {
 
         //TODO Popraw Uri builder dla dodawania zwierząt do bazy
         Uri uri = Uri.parse(requestUrl);
@@ -215,7 +226,7 @@ public final class PetUtils {
                 .appendQueryParameter("breed", pet.getmBreed());
 
         URL url = null;
-        try{
+        try {
             url = new URL(builder.build().toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -226,21 +237,62 @@ public final class PetUtils {
 
 
     private static byte[] LoadImageFromWebOperations(String url) {
+
+        InputStream in = null;
         try {
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
-            //return bitmap;
+            final int IMAGE_MAX_SIZE = 200000; // 0.1MP
+            in = (InputStream) new URL(url).getContent();
+
+            // Decode image size
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(in, null, options);
+            in.close();
+
+
+            int scale = 1;
+            while ((options.outWidth * options.outHeight) * (1 / Math.pow(scale, 2)) >
+                    IMAGE_MAX_SIZE) {
+                scale++;
+            }
+
+            Bitmap resultBitmap = null;
+            in = (InputStream) new URL(url).getContent();
+            if (scale > 1) {
+                scale--;
+                // scale to max possible inSampleSize that still yields an image
+                // larger than target
+                options = new BitmapFactory.Options();
+                options.inSampleSize = scale;
+                resultBitmap = BitmapFactory.decodeStream(in, null, options);
+
+                // resize to desired dimensions
+                int height = resultBitmap.getHeight();
+                int width = resultBitmap.getWidth();
+
+                double y = Math.sqrt(IMAGE_MAX_SIZE
+                        / (((double) width) / height));
+                double x = (y / height) * width;
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(resultBitmap, (int) x,
+                        (int) y, true);
+                resultBitmap.recycle();
+                resultBitmap = scaledBitmap;
+
+                System.gc();
+            } else {
+                resultBitmap = BitmapFactory.decodeStream(in);
+            }
+            in.close();
 
             ByteArrayOutputStream blob = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /* Ignored for PNGs */, blob);
+            resultBitmap.compress(Bitmap.CompressFormat.PNG, 0 /* Ignored for PNGs */, blob);
             return blob.toByteArray();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("PetUtils.class", e.getMessage(), e);
+            return null;
         }
-
-        return null;
     }
 
 }

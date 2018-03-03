@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.content.CursorLoader;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.FileDescriptor;
@@ -46,6 +48,8 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
     private static final int PET_LOADER = 1;
 
     private PetAdapter mAdapter;
+    private TextView mEmptyStateTextView;
+    private ProgressBar mProgressIndicator;
 
 
     @Override
@@ -56,7 +60,6 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
         GridView petGridView = rootView.findViewById(R.id.grid_view);
         mAdapter = new PetAdapter(getActivity(), new ArrayList<Pet>());
         petGridView.setAdapter(mAdapter);
-        getLoaderManager().initLoader(PET_LOADER, null, this);
 
         petGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -70,6 +73,21 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
             }
         });
 
+        mEmptyStateTextView = rootView.findViewById(R.id.empty_state);
+        petGridView.setEmptyView(mEmptyStateTextView);
+
+        mProgressIndicator = rootView.findViewById(R.id.progress_indicator);
+
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (isConnected) {
+            getLoaderManager().initLoader(PET_LOADER, null, this);
+        }else {
+            mProgressIndicator.setVisibility(View.GONE);
+            mEmptyStateTextView.setText(R.string.no_internet_connection);
+        }
 
         return rootView;
     }
@@ -83,6 +101,7 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<List<Pet>> loader, List<Pet> pets) {
+        mProgressIndicator.setVisibility(View.GONE);
         mAdapter.clear();
 
         if (pets != null && !pets.isEmpty()) {
@@ -94,6 +113,8 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
                 }
             }
         }
+
+        mEmptyStateTextView.setText(R.string.no_pets_found);
     }
 
     @Override

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Schronisko Sosnowiec</string>
+    <string name="dogs">Psy</string>
+    <string name="cats">Koty</string>
+    <string name="species_dog">Pies</string>
+    <string name="species_cat">Kot</string>
+    <string name="status_adoptable">Do Adopcji</string>
+    <string name="status_quarantine">Kwarantanna</string>
+    <string name="status_booked">Zarezerwowany</string>
+    <string name="gender_unknown">Nieznana</string>
+    <string name="gender_male">Samiec</string>
+    <string name="gender_female">Samica</string>
+    <string name="height_small">Mała</string>
+    <string name="height_medium">Średnia</string>
+    <string name="height_big">Duża</string>
+    <string name="editor_activity_title_new_pet">Dodaj zwierzaka</string>
+    <string name="editor_activity_title_edit_pet">Edytuj zwierzaka</string>
+    <string name="editor_insert_pet_failed">Błąd przy zapisywaniu zwierzaka</string>
+    <string name="editor_insert_pet_successful">Zwierzak zapisany</string>
+    <string name="editor_update_pet_failed">Błąd przy edytowaniu zwierzaka</string>
+    <string name="editor_update_pet_successful">Zwierzak zapisany</string>
+    <string name="reservation">Rezerwacja</string>
+    <string name="contact_with_keeper">Kontakt z opiekunem</string>
+    <string name="gender">Płeć</string>
+    <string name="height">Wielkość</string>
+    <string name="birth_year">Rok urodzenia</string>
+    <string name="acceptance_date">Data przyjęcia</string>
+    <string name="sterilized">Wysterylizowana</string>
+    <string name="summary">Opis</string>
+    <string name="castrated">Wykastrowany</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="no_internet_connection">Brak połączenia z internetem</string>
+    <string name="no_pets_found">Brak zwierząt</string>
+</resources>

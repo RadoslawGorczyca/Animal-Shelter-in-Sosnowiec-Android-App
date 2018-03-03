@@ -29,8 +29,6 @@ import java.util.ArrayList;
 
 public class PetAdapter extends ArrayAdapter<Pet> {
 
-    private String mImageString;
-
     public PetAdapter(@NonNull Context context, ArrayList<Pet> pets) {
         super(context, 0, pets);
     }
@@ -61,7 +59,6 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         }
 
         ImageView animalImageView = listItemView.findViewById(R.id.animal_image);
-        //animalImageView.setImageResource(currentPet.getmImageResourceId());
         animalImageView.setImageBitmap(decodeBlobToBitmap(currentPet.getmImageBlob()));
 
         ImageView statusIconView = listItemView.findViewById(R.id.status_icon);

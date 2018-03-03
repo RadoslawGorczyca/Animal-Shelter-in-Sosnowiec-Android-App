@@ -190,7 +190,7 @@
                     android:id="@+id/gender"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:paddingLeft="4dp"
                     android:text="Male" />
             </TableRow>
@@ -208,7 +208,7 @@
                     android:id="@+id/height"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:paddingLeft="4dp"
                     android:text="Small" />
             </TableRow>
@@ -226,7 +226,7 @@
                     android:id="@+id/birth_year"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:paddingLeft="4dp"
                     android:text="2015" />
             </TableRow>
@@ -244,7 +244,7 @@
                     android:id="@+id/acceptance_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:paddingLeft="4dp"
                     android:text="15-12-2017" />
             </TableRow>
@@ -263,7 +263,7 @@
                     android:id="@+id/sterilized"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:paddingLeft="4dp"
                     android:text="Yes" />
             </TableRow>
