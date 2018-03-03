@@ -160,12 +160,12 @@ public final class PetUtils {
                 int sterilized = petJSON.getInt("sterilized");
                 String summary = petJSON.getString("summary");
                 String imageUrl = petJSON.getString("image");
-                byte[] imageBlob = LoadImageFromWebOperations(imageUrl);
+                //byte[] imageBlob = LoadImageFromWebOperations(imageUrl);
                 String breed = petJSON.getString("breed");
                 String contactNumber = petJSON.getString("contactNumber");
 
                 Pet pet = new Pet(id, species, code, name, status, gender, height, birthYear,
-                        acceptanceDate, sterilized, summary, imageBlob, breed, contactNumber);
+                        acceptanceDate, sterilized, summary, imageUrl, breed, contactNumber);
                 pets.add(pet);
             }
 

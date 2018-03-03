@@ -85,6 +85,7 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
 
         if (isConnected) {
             getLoaderManager().initLoader(PET_LOADER, null, this);
+
         }else {
             mProgressIndicator.setVisibility(View.GONE);
             mEmptyStateTextView.setText(R.string.no_internet_connection);

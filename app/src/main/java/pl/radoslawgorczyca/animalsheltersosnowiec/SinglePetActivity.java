@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
@@ -29,13 +32,16 @@ public class SinglePetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_pet_layout);
 
+        ImageLoader imageLoader = ImageLoader.getInstance();
+
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             currentPet = (Pet) getIntent().getSerializableExtra("currentPet");
         }
 
         ImageView animalImage = findViewById(R.id.single_animal_image);
-        animalImage.setImageBitmap(decodeBlobToBitmap(currentPet.getmImageBlob()));
+        Picasso.with(this).load(currentPet.getmImageUrl()).into(animalImage);
+
 
         TextView animalName = findViewById(R.id.single_animal_name);
         animalName.setText(currentPet.getmName());

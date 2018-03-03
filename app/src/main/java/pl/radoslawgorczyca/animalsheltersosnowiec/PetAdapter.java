@@ -16,6 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -40,6 +43,7 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.grid_view_item, parent, false);
+
         }
 
         Pet currentPet = getItem(position);
@@ -59,7 +63,8 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         }
 
         ImageView animalImageView = listItemView.findViewById(R.id.animal_image);
-        animalImageView.setImageBitmap(decodeBlobToBitmap(currentPet.getmImageBlob()));
+        //animalImageView.setImageBitmap(decodeBlobToBitmap(currentPet.getmImageBlob()));
+        Picasso.with(getContext()).load(currentPet.getmImageUrl()).into(animalImageView);
 
         ImageView statusIconView = listItemView.findViewById(R.id.status_icon);
         if (currentPet.getmStatus() == 2) {

@@ -21,13 +21,14 @@ public class Pet implements Serializable {
     private String mAcceptanceDate;
     private int mSterilized;
     private String mSummary;
-    private byte[] mImageBlob;
+    private String mImageUrl;
+    //private byte[] mImageBlob;
     private String mBreed;
     private String mContactNumber;
 
     public Pet(double mId, int mSpecies, String mCode, String mName, int mStatus,
                int mGender, int mHeight, String mBirthYear, String mAcceptanceDate,
-               int mSterilized, String mSummary, byte[] mImageBlob, String mBreed, String mContactNumber) {
+               int mSterilized, String mSummary, String mImageUrl, String mBreed, String mContactNumber) {
         this.mId = mId;
         this.mSpecies = mSpecies;
         this.mCode = mCode;
@@ -39,7 +40,7 @@ public class Pet implements Serializable {
         this.mAcceptanceDate = mAcceptanceDate;
         this.mSterilized = mSterilized;
         this.mSummary = mSummary;
-        this.mImageBlob = mImageBlob;
+        this.mImageUrl = mImageUrl;
         this.mBreed = mBreed;
         this.mContactNumber = mContactNumber;
 
@@ -93,12 +94,12 @@ public class Pet implements Serializable {
         this.mSummary = mSummary;
     }
 
-    public byte[] getmImageBlob() {
-        return mImageBlob;
+    public String getmImageUrl() {
+        return mImageUrl;
     }
 
-    public void setmImageBlob(byte[] mImageBlob) {
-        this.mImageBlob = mImageBlob;
+    public void setmImageUrl(String mImageUrl) {
+        this.mImageUrl = mImageUrl;
     }
 
     public double getmId() {
