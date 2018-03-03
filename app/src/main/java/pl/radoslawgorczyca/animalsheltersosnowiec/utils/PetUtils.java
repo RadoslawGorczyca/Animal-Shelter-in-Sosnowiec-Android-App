@@ -181,10 +181,11 @@ public final class PetUtils {
         return pets;
     }
 
-    public static void pushDataToDatabase(String requestUrl, Pet newPet) {
+    public static int pushDataToDatabase(String requestUrl, Pet newPet) {
         if (android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
         URL url = createUrlWithParams(requestUrl, newPet);
+        String newPetId = "0";
 
         HttpURLConnection urlConnection = null;
         try {
@@ -196,6 +197,7 @@ public final class PetUtils {
 
             if (urlConnection.getResponseCode() == 200) {
                 Log.e(LOG_TAG, "Success response code: " + urlConnection.getResponseCode());
+                newPetId = readFromStream(urlConnection.getInputStream());
             } else if (urlConnection.getResponseCode() == 408) {
                 urlConnection.disconnect();
                 urlConnection.connect();
@@ -210,11 +212,12 @@ public final class PetUtils {
             }
         }
 
+        return Integer.decode(newPetId);
+
     }
 
     private static URL createUrlWithParams(String requestUrl, Pet pet) {
 
-        //TODO Popraw Uri builder dla dodawania zwierząt do bazy
         Uri uri = Uri.parse(requestUrl);
         Uri.Builder builder = uri.buildUpon();
         builder
@@ -222,8 +225,16 @@ public final class PetUtils {
                 .appendQueryParameter("status", String.valueOf(pet.getmStatus()))
                 .appendQueryParameter("code", pet.getmCode())
                 .appendQueryParameter("name", pet.getmName())
+                .appendQueryParameter("status", String.valueOf(pet.getmStatus()))
                 .appendQueryParameter("gender", String.valueOf(pet.getmGender()))
-                .appendQueryParameter("breed", pet.getmBreed());
+                .appendQueryParameter("height", String.valueOf(pet.getmHeight()))
+                .appendQueryParameter("birthYear", pet.getmBirthYear())
+                .appendQueryParameter("acceptanceDate", pet.getmAcceptanceDate())
+                .appendQueryParameter("sterilized", String.valueOf(pet.getmSterilized()))
+                .appendQueryParameter("summary", pet.getmSummary())
+                .appendQueryParameter("image", pet.getmImageUrl())
+                .appendQueryParameter("breed", pet.getmBreed())
+                .appendQueryParameter("contactNumber", pet.getmContactNumber());
 
         URL url = null;
         try {

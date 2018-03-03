@@ -33,7 +33,8 @@ public class PetPostLoader extends AsyncTaskLoader<Pet> {
         if(android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
 
-        PetUtils.pushDataToDatabase(mUrl, mPet);
+        int newPetId = PetUtils.pushDataToDatabase(mUrl, mPet);
+        mPet.setmId(newPetId);
         return mPet;
     }
 }

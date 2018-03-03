@@ -26,4 +26,9 @@
         <item>@string/height_big</item>
     </string-array>
 
+    <string-array name="array_sterilized_options">
+        <item>@string/sterilized_yes</item>
+        <item>@string/sterilized_no</item>
+    </string-array>
+
 </resources>

@@ -20,6 +20,9 @@
     <string name="height_small">Small</string>
     <string name="height_medium">Medium</string>
     <string name="height_big">Big</string>
+
+    <string name="sterilized_yes">Yes</string>
+    <string name="sterilized_no">No</string>
     <!-- LABELS FOR ARRAYS! -->
 
 

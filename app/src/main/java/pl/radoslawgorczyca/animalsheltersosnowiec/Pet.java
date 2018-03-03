@@ -26,6 +26,25 @@ public class Pet implements Serializable {
     private String mBreed;
     private String mContactNumber;
 
+    public Pet(int mSpecies, String mCode, String mName, int mStatus,
+               int mGender, int mHeight, String mBirthYear, String mAcceptanceDate,
+               int mSterilized, String mSummary, String mImageUrl, String mBreed, String mContactNumber) {
+        this.mSpecies = mSpecies;
+        this.mCode = mCode;
+        this.mName = mName;
+        this.mStatus = mStatus;
+        this.mGender = mGender;
+        this.mHeight = mHeight;
+        this.mBirthYear = mBirthYear;
+        this.mAcceptanceDate = mAcceptanceDate;
+        this.mSterilized = mSterilized;
+        this.mSummary = mSummary;
+        this.mImageUrl = mImageUrl;
+        this.mBreed = mBreed;
+        this.mContactNumber = mContactNumber;
+
+    }
+
     public Pet(double mId, int mSpecies, String mCode, String mName, int mStatus,
                int mGender, int mHeight, String mBirthYear, String mAcceptanceDate,
                int mSterilized, String mSummary, String mImageUrl, String mBreed, String mContactNumber) {

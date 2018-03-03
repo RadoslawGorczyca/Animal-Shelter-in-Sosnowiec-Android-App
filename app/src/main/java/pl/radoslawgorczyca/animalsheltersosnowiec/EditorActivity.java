@@ -41,7 +41,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     LoaderManager loaderManager;
 
-    private Uri mCurrentPetUri;
+    private String mUrl;
 
     private Pet mPet;
 
@@ -49,16 +49,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private Spinner mGenderSpinner;
     private Spinner mHeightSpinner;
     private Spinner mStatusSpinner;
+    private Spinner mSterilizedSpinner;
 
     private EditText mCodeEditText;
     private EditText mNameEditText;
     private EditText mBreedEditText;
     private EditText mSummaryEditText;
+    private EditText mBirthYearEditText;
+    private EditText mAcceptanceDateEditText;
+    private EditText mContactNumberEditText;
 
     private int mSpecies = PetEntry.SPECIES_DOG;
     private int mGender = PetEntry.GENDER_MALE;
     private int mHeight = PetEntry.HEIGHT_SMALL;
     private int mStatus = PetEntry.STATUS_ADOPTABLE;
+    private int mSterilized = PetEntry.STERILIZED_YES;
 
     private boolean mPetHasChanged = false;
 
@@ -77,9 +82,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         setTitle("Add Pet");
 
         Intent intent = getIntent();
-        mCurrentPetUri = intent.getData();
+        //mPet = intent.getData();
 
-        if (mCurrentPetUri == null) {
+        if (mPet == null) {
             setTitle(getString(R.string.editor_activity_title_new_pet));
             invalidateOptionsMenu();
         } else {
@@ -91,6 +96,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mGenderSpinner = findViewById(R.id.spinner_gender);
         mHeightSpinner = findViewById(R.id.spinner_height);
         mStatusSpinner = findViewById(R.id.spinner_status);
+        mSterilizedSpinner = findViewById(R.id.spinner_sterilized);
 
         setupSpinners();
 
@@ -98,6 +104,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mNameEditText = findViewById(R.id.edit_pet_name);
         mBreedEditText = findViewById(R.id.edit_pet_breed);
         mSummaryEditText = findViewById(R.id.edit_pet_summary);
+        mBirthYearEditText = findViewById(R.id.edit_pet_birth_year);
+        mAcceptanceDateEditText = findViewById(R.id.edit_pet_acceptance_date);
+        mContactNumberEditText = findViewById(R.id.edit_pet_contact_number);
 
         loaderManager = getSupportLoaderManager();
     }
@@ -116,18 +125,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         ArrayAdapter statusSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.array_status_options, android.R.layout.simple_spinner_item);
 
+        ArrayAdapter sterilizedSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_sterilized_options, android.R.layout.simple_spinner_item);
+
 
         // Specify dropdown layout style - simple list view with 1 item per line
         speciesSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         genderSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         heightSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         statusSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        sterilizedSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         // Apply the adapter to the spinner
         mSpeciesSpinner.setAdapter(speciesSpinnerAdapter);
         mGenderSpinner.setAdapter(genderSpinnerAdapter);
         mHeightSpinner.setAdapter(heightSpinnerAdapter);
         mStatusSpinner.setAdapter(statusSpinnerAdapter);
+        mSterilizedSpinner.setAdapter(sterilizedSpinnerAdapter);
 
         // Set the integer mSelected to the constant values
         mSpeciesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -211,6 +225,25 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 mStatus = PetEntry.STATUS_ADOPTABLE;
             }
         });
+
+        mSterilizedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selection = (String) adapterView.getItemAtPosition(i);
+                if (!TextUtils.isEmpty(selection)) {
+                    if (selection.equals(getString(R.string.sterilized_yes))) {
+                        mSterilized = PetEntry.STERILIZED_YES;
+                    } else {
+                        mSterilized = PetEntry.STERILIZED_NO;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                mStatus = PetEntry.STERILIZED_YES;
+            }
+        });
     }
 
     private void savePet() {
@@ -219,10 +252,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
         String summaryString = mSummaryEditText.getText().toString().trim();
+        String birthYearString = mBirthYearEditText.getText().toString().trim();
+        String acceptanceDateString = mAcceptanceDateEditText.getText().toString().trim();
+        String contactNumberString = mContactNumberEditText.getText().toString().trim();
 
-        if(mCurrentPetUri == null &&
+
+        if(mPet == null &&
                 TextUtils.isEmpty(codeString) && TextUtils.isEmpty(nameString) &&
-                TextUtils.isEmpty(breedString) && TextUtils.isEmpty(summaryString)){
+                TextUtils.isEmpty(breedString) && TextUtils.isEmpty(summaryString) &&
+                TextUtils.isEmpty(birthYearString) && TextUtils.isEmpty(acceptanceDateString) &&
+                TextUtils.isEmpty(contactNumberString)){
             return;
         }
 
@@ -239,13 +278,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         //mPet = new Pet(0, mSpecies, mStatus, codeString, nameString, mGender, breedString, null);
 
         // Determine if this is a new or existing pet by checking if mCurrentPetUri is null or not
-        if (mCurrentPetUri == null) {
+        if (mPet == null) {
             // This is a NEW pet, so insert a new pet into the provider,
             // returning the content URI for the new pet.
             //Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+            mUrl = PetContract.SHELTER_POST_URL;
+        }else{
+            mUrl = PetContract.SHELTER_UPDATE_URL;
+        }
 
-            loaderManager.initLoader(2, null, this);
-
+        mPet = new Pet(mSpecies, codeString, nameString, mStatus, mGender, mHeight, birthYearString, acceptanceDateString, mSterilized, summaryString, null, breedString, contactNumberString);
+        loaderManager.initLoader(2, null, this);
 
         /*} else {
             // Otherwise this is an EXISTING pet, so update the pet with content URI: mCurrentPetUri
@@ -264,7 +307,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Toast.makeText(this, getString(R.string.editor_update_pet_successful),
                         Toast.LENGTH_SHORT).show();
             }*/
-        }
+
 
     }
 
@@ -298,7 +341,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public Loader<Pet> onCreateLoader(int id, Bundle args) {
         if(android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
-        Uri baseUri = Uri.parse(PetContract.SHELTER_POST_URL);
+        Uri baseUri = Uri.parse(mUrl);
         return new PetPostLoader(this, baseUri.toString(), mPet);
     }
 

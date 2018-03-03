@@ -4,14 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
     tools:context=".EditorActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:orientation="vertical">
+
+        <ImageButton
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/plus_icon"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,10 +28,11 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="Species" />
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -38,7 +45,7 @@
                     android:paddingRight="16dp"
                     android:spinnerMode="dropdown"/>
 
-            </LinearLayout>
+            </FrameLayout>
 
         </LinearLayout>
 
@@ -51,6 +58,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="Gender" />
 
@@ -79,6 +87,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="Height" />
 
@@ -107,6 +116,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="Status" />
 
@@ -118,6 +128,35 @@
 
                 <Spinner
                     android:id="@+id/spinner_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:paddingRight="16dp"
+                    android:spinnerMode="dropdown"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Sterilized" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinner_sterilized"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:paddingRight="16dp"
@@ -150,6 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Code"
+
                     android:inputType="textCapWords" />
 
                 <EditText
@@ -165,6 +205,27 @@
                     android:layout_height="wrap_content"
                     android:hint="Breed"
                     android:inputType="textCapWords" />
+
+                <EditText
+                    android:id="@+id/edit_pet_birth_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Birth year"
+                    android:inputType="numberDecimal" />
+
+                <EditText
+                    android:id="@+id/edit_pet_acceptance_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Acceptance date"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/edit_pet_contact_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contact number"
+                    android:inputType="phone" />
 
                 <EditText
                     android:id="@+id/edit_pet_summary"
