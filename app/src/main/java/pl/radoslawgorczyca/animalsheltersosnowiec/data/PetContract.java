@@ -24,7 +24,20 @@ public class PetContract {
     public static final String SHELTER_UPDATE_URL =
             "http://gorczyca.org/schronisko-sosnowiec/updateData.php";
 
+    public static final String FTP_URL =
+            "ftp.gorczyca.org";
 
+    public static final int FTP_PORT =
+            21;
+
+    public static final String FTP_USERNAME =
+            "nex_gorczyca";
+
+    public static final String FTP_PASSWORD =
+            "1Jabadabadu1";
+
+    public static final String FTP_PHOTO_URL =
+            "http://gorczyca.org/schronisko-sosnowiec/photos/";
 
 
     public static final String CONTENT_AUTHORITY = "pl.radoslawgorczyca.animalsheltersosnowiec";

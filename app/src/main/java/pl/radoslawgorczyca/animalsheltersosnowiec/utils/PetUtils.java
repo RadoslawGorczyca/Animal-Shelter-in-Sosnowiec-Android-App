@@ -3,9 +3,11 @@ package pl.radoslawgorczyca.animalsheltersosnowiec.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Debug;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.jibble.simpleftp.SimpleFTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +23,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -184,6 +188,8 @@ public final class PetUtils {
     public static int pushDataToDatabase(String requestUrl, Pet newPet) {
         if (android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
+
+        newPet = pushImageToFTP(newPet);
         URL url = createUrlWithParams(requestUrl, newPet);
         String newPetId = "0";
 
@@ -213,6 +219,58 @@ public final class PetUtils {
         }
 
         return Integer.decode(newPetId);
+
+    }
+
+    public static String stripNonDigits(
+            final CharSequence input /* inspired by seh's comment */) {
+        final StringBuilder sb = new StringBuilder(
+                input.length() /* also inspired by seh's comment */);
+        for (int i = 0; i < input.length(); i++) {
+            final char c = input.charAt(i);
+            if (c > 47 && c < 58) {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    private static Pet pushImageToFTP(Pet pet) {
+
+        if (Debug.isDebuggerConnected())
+            Debug.waitForDebugger();
+
+        String mNewImageUrl;
+        boolean folder;
+
+        SimpleFTP ftp = new SimpleFTP();
+        try {
+            // Connect to an FTP server on port 21.
+            ftp.connect(PetContract.FTP_URL, PetContract.FTP_PORT, PetContract.FTP_USERNAME, PetContract.FTP_PASSWORD);
+
+            // Set binary mode.
+            ftp.bin();
+
+            ftp.cwd("gorczyca");
+            ftp.cwd("schronisko-sosnowiec");
+            ftp.cwd("photos");
+            // Change to a new working directory on the FTP server.
+
+            File file = new File(new URI(pet.getmImageUrl()));
+            // Upload some files.
+            ftp.stor(file);
+            pet.setmImageUrl(PetContract.FTP_PHOTO_URL + file.getName());
+
+            // Quit from the FTP server.
+            ftp.disconnect();
+            return pet;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return pet;
 
     }
 

@@ -1,17 +1,18 @@
 package pl.radoslawgorczyca.animalsheltersosnowiec;
 
-import android.content.ContentValues;
-import android.content.DialogInterface;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -19,14 +20,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract.PetEntry;
@@ -44,6 +44,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private String mUrl;
 
     private Pet mPet;
+
+    private ImageButton mImageButton;
+    Uri mCropImageUri;
+    Uri mResultUri;
 
     private Spinner mSpeciesSpinner;
     private Spinner mGenderSpinner;
@@ -92,6 +96,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             //getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
         }
 
+
+        mImageButton = findViewById(R.id.edit_pet_image);
+        mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CropImage.startPickImageActivity(EditorActivity.this);
+            }
+        });
+
         mSpeciesSpinner = findViewById(R.id.spinner_species);
         mGenderSpinner = findViewById(R.id.spinner_gender);
         mHeightSpinner = findViewById(R.id.spinner_height);
@@ -109,6 +122,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mContactNumberEditText = findViewById(R.id.edit_pet_contact_number);
 
         loaderManager = getSupportLoaderManager();
+
     }
 
     private void setupSpinners() {
@@ -246,6 +260,66 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
+    public void startCropImageActivity(Uri imageUri){
+        CropImage.activity(imageUri)
+                .setAspectRatio(1,1)
+                .setRequestedSize(500, 500, CropImageView.RequestSizeOptions.RESIZE_INSIDE)
+                .setFixAspectRatio(true)
+                .start(this);
+    }
+
+    @Override
+    @SuppressLint("NewApi")
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // handle result of pick image chooser
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+
+
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+            } else {
+                // no permissions required or already granted, can start crop image activity
+                startCropImageActivity(imageUri);
+            }
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                mResultUri = result.getUri();
+                mImageButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mImageButton.setImageURI(mResultUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                CropImage.startPickImageActivity(this);
+            } else {
+                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+            }
+        }
+        if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
+            if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // required permissions granted, start crop image activity
+                startCropImageActivity(mCropImageUri);
+            } else {
+                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+
     private void savePet() {
 
         String codeString = mCodeEditText.getText().toString().trim();
@@ -287,7 +361,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mUrl = PetContract.SHELTER_UPDATE_URL;
         }
 
-        mPet = new Pet(mSpecies, codeString, nameString, mStatus, mGender, mHeight, birthYearString, acceptanceDateString, mSterilized, summaryString, null, breedString, contactNumberString);
+        mPet = new Pet(mSpecies, codeString, nameString, mStatus, mGender, mHeight, birthYearString, acceptanceDateString, mSterilized, summaryString, mResultUri.toString(), breedString, contactNumberString);
         loaderManager.initLoader(2, null, this);
 
         /*} else {

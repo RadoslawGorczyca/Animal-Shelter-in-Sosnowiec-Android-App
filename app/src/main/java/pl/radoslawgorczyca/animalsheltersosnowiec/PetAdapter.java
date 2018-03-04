@@ -64,8 +64,9 @@ public class PetAdapter extends ArrayAdapter<Pet> {
 
         ImageView animalImageView = listItemView.findViewById(R.id.animal_image);
         //animalImageView.setImageBitmap(decodeBlobToBitmap(currentPet.getmImageBlob()));
-        Picasso.with(getContext()).load(currentPet.getmImageUrl()).into(animalImageView);
-
+        if (!currentPet.getmImageUrl().isEmpty()) {
+            Picasso.with(getContext()).load(currentPet.getmImageUrl()).into(animalImageView);
+        }
         ImageView statusIconView = listItemView.findViewById(R.id.status_icon);
         if (currentPet.getmStatus() == 2) {
             statusIconView.setImageResource(R.mipmap.orange_circle);
@@ -79,13 +80,13 @@ public class PetAdapter extends ArrayAdapter<Pet> {
 
     }
 
-    public void updateData(ArrayList<Pet> list){
+    public void updateData(ArrayList<Pet> list) {
 
     }
 
     private Bitmap decodeBlobToBitmap(byte[] imageBlob) {
 
-        if(imageBlob != null) {
+        if (imageBlob != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageBlob, 0, imageBlob.length);
             return bitmap;
         }
