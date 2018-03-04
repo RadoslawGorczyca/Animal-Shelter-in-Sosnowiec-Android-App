@@ -313,6 +313,40 @@ public final class PetUtils {
         return url;
     }
 
+    //TODO finish this
+    /*public static void deletePet(String requestUrl, Pet pet){
+
+        Uri uri = Uri.parse(requestUrl);
+        Uri.Builder builder = uri.buildUpon();
+        builder
+                .appendQueryParameter("id", String.valueOf(pet.getmId()));
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.connect();
+
+            if (urlConnection.getResponseCode() == 200) {
+                Log.e(LOG_TAG, "Success response code: " + urlConnection.getResponseCode());
+                newPetId = readFromStream(urlConnection.getInputStream());
+            } else if (urlConnection.getResponseCode() == 408) {
+                urlConnection.disconnect();
+                urlConnection.connect();
+            } else {
+                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
+            }
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem parsing data to database", e);
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+    }*/
+
 
     private static byte[] LoadImageFromWebOperations(String url) {
 

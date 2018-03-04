@@ -45,6 +45,7 @@
     <string name="no">No</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="no_pets_found">No pets found</string>
+    <string name="delete">Delete</string>
 
 
 </resources>

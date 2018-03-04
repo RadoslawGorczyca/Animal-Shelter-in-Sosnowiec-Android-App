@@ -5,7 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,7 +29,7 @@ import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
  * Created by Radek on 18-Dec-17.
  */
 
-public class SinglePetActivity extends AppCompatActivity {
+public class SinglePetActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Pet> {
 
     private Pet currentPet;
 
@@ -38,6 +44,8 @@ public class SinglePetActivity extends AppCompatActivity {
         if(extras != null){
             currentPet = (Pet) getIntent().getSerializableExtra("currentPet");
         }
+
+        setTitle(currentPet.getmName());
 
         ImageView animalImage = findViewById(R.id.single_animal_image);
         Picasso.with(this).load(currentPet.getmImageUrl()).into(animalImage);
@@ -117,12 +125,60 @@ public class SinglePetActivity extends AppCompatActivity {
         summaryTV.setText(currentPet.getmSummary());
     }
 
-    private Bitmap decodeBlobToBitmap(byte[] imageBlob) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu options from the res/menu/menu_editor.xml file.
+        // This adds menu items to the app bar.
+        getMenuInflater().inflate(R.menu.menu_single_pet, menu);
+        return true;
+    }
 
-        if(imageBlob != null) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBlob, 0, imageBlob.length);
-            return bitmap;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            // Respond to a click on the "Save" menu option
+            case R.id.action_edit:
+                // Save pet to database
+                editPet();
+                // Exit activity
+                //finish();
+                return true;
+
+            case R.id.action_delete:
+
+                deletePet();
         }
-        return null;
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void editPet() {
+
+        Intent intent = new Intent(this, EditorActivity.class);
+        intent.putExtra("currentPet", currentPet);
+        startActivity(intent);
+    }
+
+    private void deletePet() {
+
+    }
+
+    @NonNull
+    @Override
+    public Loader<Pet> onCreateLoader(int id, @Nullable Bundle args) {
+        Uri baseUri = Uri.parse(PetContract.SHELTER_DELETE_URL);
+        return new PetPostLoader(this, baseUri.toString(), currentPet);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Pet> loader, Pet data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Pet> loader) {
+
     }
 }
+

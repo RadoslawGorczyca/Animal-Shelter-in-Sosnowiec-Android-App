@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -85,15 +86,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         setContentView(R.layout.activity_editor);
         setTitle("Add Pet");
 
-        Intent intent = getIntent();
-        //mPet = intent.getData();
-
-        if (mPet == null) {
-            setTitle(getString(R.string.editor_activity_title_new_pet));
-            invalidateOptionsMenu();
-        } else {
-            setTitle(getString(R.string.editor_activity_title_edit_pet));
-            //getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mPet = (Pet) getIntent().getSerializableExtra("currentPet");
         }
 
         mImageButton = findViewById(R.id.edit_pet_image);
@@ -110,8 +105,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mStatusSpinner = findViewById(R.id.spinner_status);
         mSterilizedSpinner = findViewById(R.id.spinner_sterilized);
 
-        setupSpinners();
-
         mCodeEditText = findViewById(R.id.edit_pet_code);
         mNameEditText = findViewById(R.id.edit_pet_name);
         mBreedEditText = findViewById(R.id.edit_pet_breed);
@@ -122,6 +115,37 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         loaderManager = getSupportLoaderManager();
 
+        if (mPet == null) {
+            setTitle(getString(R.string.editor_activity_title_new_pet));
+            invalidateOptionsMenu();
+        } else {
+            setTitle(getString(R.string.editor_activity_title_edit_pet));
+            invalidateOptionsMenu();
+            showDataOnActivity();
+        }
+
+        setupSpinners();
+
+    }
+
+    private void showDataOnActivity() {
+        Picasso.with(this).load(mPet.getmImageUrl()).into(mImageButton);
+        mSpecies = mPet.getmSpecies();
+        mGender = mPet.getmGender();
+        mHeight = mPet.getmHeight();
+        mStatus = mPet.getmStatus();
+        mSterilized = mPet.getmSterilized();
+
+        //TODO set spinners to currentPet data
+        //mSpeciesSpinner.setSelection();
+
+        mCodeEditText.setText(mPet.getmCode().equals("null") ? "" : mPet.getmCode());
+        mNameEditText.setText(mPet.getmName().equals("null") ? "" : mPet.getmName());
+        mBreedEditText.setText(mPet.getmBreed().equals("null") ? "" : mPet.getmBreed());
+        mSummaryEditText.setText(mPet.getmSummary().equals("null") ? "" : mPet.getmSummary());
+        mBirthYearEditText.setText(mPet.getmBirthYear().equals("null") ? "" : mPet.getmBirthYear());
+        mAcceptanceDateEditText.setText(mPet.getmAcceptanceDate().equals("null") ? "" : mPet.getmAcceptanceDate());
+        mContactNumberEditText.setText(mPet.getmContactNumber().equals("null") ? "" : mPet.getmContactNumber());
     }
 
     private void setupSpinners() {
@@ -259,9 +283,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
-    public void startCropImageActivity(Uri imageUri){
+    public void startCropImageActivity(Uri imageUri) {
         CropImage.activity(imageUri)
-                .setAspectRatio(1,1)
+                .setAspectRatio(1, 1)
                 .setRequestedSize(500, 500, CropImageView.RequestSizeOptions.RESIZE_INSIDE)
                 .setFixAspectRatio(true)
                 .start(this);
@@ -279,7 +303,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
                 // request permissions and handle the result in onRequestPermissionsResult()
                 mCropImageUri = imageUri;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
             } else {
                 // no permissions required or already granted, can start crop image activity
                 startCropImageActivity(imageUri);
@@ -318,7 +342,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
 
-
     private void savePet() {
 
         String codeString = mCodeEditText.getText().toString().trim();
@@ -330,23 +353,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String contactNumberString = mContactNumberEditText.getText().toString().trim();
 
 
-        if(mPet == null &&
+        if (mPet == null &&
                 TextUtils.isEmpty(codeString) && TextUtils.isEmpty(nameString) &&
                 TextUtils.isEmpty(breedString) && TextUtils.isEmpty(summaryString) &&
                 TextUtils.isEmpty(birthYearString) && TextUtils.isEmpty(acceptanceDateString) &&
-                TextUtils.isEmpty(contactNumberString)){
+                TextUtils.isEmpty(contactNumberString)) {
             return;
         }
 
         // Determine if this is a new or existing pet by checking if mCurrentPetUri is null or not
         if (mPet == null) {
             mUrl = PetContract.SHELTER_POST_URL;
-        }else{
+        } else {
             mUrl = PetContract.SHELTER_UPDATE_URL;
         }
 
         String imageUrl = "";
-        if(mResultUri != null){
+        if (mResultUri != null) {
             imageUrl = mResultUri.toString();
         }
 
@@ -384,7 +407,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public Loader<Pet> onCreateLoader(int id, Bundle args) {
-        if(android.os.Debug.isDebuggerConnected())
+        if (android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
         Uri baseUri = Uri.parse(mUrl);
         return new PetPostLoader(this, baseUri.toString(), mPet);
@@ -392,7 +415,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<Pet> loader, Pet addedPet) {
-        if(android.os.Debug.isDebuggerConnected())
+        if (android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
         mPet = addedPet;
         // Show a toast message depending on whether or not the insertion was successful.
