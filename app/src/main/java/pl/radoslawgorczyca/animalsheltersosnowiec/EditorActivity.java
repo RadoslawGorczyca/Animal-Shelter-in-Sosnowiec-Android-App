@@ -96,7 +96,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             //getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
         }
 
-
         mImageButton = findViewById(R.id.edit_pet_image);
         mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,48 +338,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
-        /*ContentValues values = new ContentValues();
-        values.put(PetEntry.COLUMN_PET_SPECIES, mSpecies);
-        values.put(PetEntry.COLUMN_PET_GENDER, mGender);
-        values.put(PetEntry.COLUMN_PET_HEIGHT, mHeight);
-        values.put(PetEntry.COLUMN_PET_STATUS, mStatus);
-        values.put(PetEntry.COLUMN_PET_CODE, codeString);
-        values.put(PetEntry.COLUMN_PET_NAME, nameString);
-        values.put(PetEntry.COLUMN_PET_BREED, breedString);
-        values.put(PetEntry.COLUMN_PET_SUMMARY, summaryString);*/
-
-        //mPet = new Pet(0, mSpecies, mStatus, codeString, nameString, mGender, breedString, null);
-
         // Determine if this is a new or existing pet by checking if mCurrentPetUri is null or not
         if (mPet == null) {
-            // This is a NEW pet, so insert a new pet into the provider,
-            // returning the content URI for the new pet.
-            //Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
             mUrl = PetContract.SHELTER_POST_URL;
         }else{
             mUrl = PetContract.SHELTER_UPDATE_URL;
         }
 
-        mPet = new Pet(mSpecies, codeString, nameString, mStatus, mGender, mHeight, birthYearString, acceptanceDateString, mSterilized, summaryString, mResultUri.toString(), breedString, contactNumberString);
+        String imageUrl = "";
+        if(mResultUri != null){
+            imageUrl = mResultUri.toString();
+        }
+
+        mPet = new Pet(mSpecies, codeString, nameString, mStatus, mGender, mHeight, birthYearString, acceptanceDateString, mSterilized, summaryString, imageUrl, breedString, contactNumberString);
         loaderManager.initLoader(2, null, this);
-
-        /*} else {
-            // Otherwise this is an EXISTING pet, so update the pet with content URI: mCurrentPetUri
-            // and pass in the new ContentValues. Pass in null for the selection and selection args
-            // because mCurrentPetUri will already identify the correct row in the database that
-            // we want to modify.
-            int rowsAffected = getContentResolver().update(mCurrentPetUri, values, null, null);
-
-            // Show a toast message depending on whether or not the update was successful.
-            if (rowsAffected == 0) {
-                // If no rows were affected, then there was an error with the update.
-                Toast.makeText(this, getString(R.string.editor_update_pet_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_update_pet_successful),
-                        Toast.LENGTH_SHORT).show();
-            }*/
 
 
     }

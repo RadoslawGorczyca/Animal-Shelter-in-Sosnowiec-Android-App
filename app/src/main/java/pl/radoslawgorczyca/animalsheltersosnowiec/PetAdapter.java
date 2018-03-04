@@ -67,6 +67,8 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         if (!currentPet.getmImageUrl().isEmpty()) {
             Picasso.with(getContext()).load(currentPet.getmImageUrl()).into(animalImageView);
         }
+
+
         ImageView statusIconView = listItemView.findViewById(R.id.status_icon);
         if (currentPet.getmStatus() == 2) {
             statusIconView.setImageResource(R.mipmap.orange_circle);

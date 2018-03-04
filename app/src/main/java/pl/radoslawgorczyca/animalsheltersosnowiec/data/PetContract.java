@@ -39,6 +39,14 @@ public class PetContract {
     public static final String FTP_PHOTO_URL =
             "http://gorczyca.org/schronisko-sosnowiec/photos/";
 
+    public static final String FTP_NO_PHOTO_DOG =
+            "nodog.png";
+
+    public static final String FTP_NO_PHOTO_CAT =
+            "nocat.png";
+
+
+
 
     public static final String CONTENT_AUTHORITY = "pl.radoslawgorczyca.animalsheltersosnowiec";
 

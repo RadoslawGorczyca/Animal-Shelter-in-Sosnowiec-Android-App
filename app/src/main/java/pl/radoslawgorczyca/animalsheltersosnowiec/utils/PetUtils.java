@@ -240,6 +240,15 @@ public final class PetUtils {
         if (Debug.isDebuggerConnected())
             Debug.waitForDebugger();
 
+        if(pet.getmImageUrl().isEmpty() || pet.getmImageUrl().equals("")){
+            if(pet.getmSpecies() == PetEntry.SPECIES_DOG){
+                pet.setmImageUrl(PetContract.FTP_PHOTO_URL + PetContract.FTP_NO_PHOTO_DOG);
+            } else{
+                pet.setmImageUrl(PetContract.FTP_PHOTO_URL + PetContract.FTP_NO_PHOTO_CAT);
+            }
+            return pet;
+        }
+
         String mNewImageUrl;
         boolean folder;
 
