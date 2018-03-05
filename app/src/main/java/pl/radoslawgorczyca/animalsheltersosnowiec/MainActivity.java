@@ -11,8 +11,6 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ListView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 
@@ -24,10 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .build();
-        ImageLoader.getInstance().init(config);
 
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = findViewById(R.id.fab);

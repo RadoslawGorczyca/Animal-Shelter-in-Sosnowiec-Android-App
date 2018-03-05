@@ -313,13 +313,18 @@ public final class PetUtils {
         return url;
     }
 
-    //TODO finish this
-    /*public static void deletePet(String requestUrl, Pet pet){
+    public static int deletePet(String requestUrl, Pet pet){
 
         Uri uri = Uri.parse(requestUrl);
         Uri.Builder builder = uri.buildUpon();
         builder
                 .appendQueryParameter("id", String.valueOf(pet.getmId()));
+        URL url = null;
+        try {
+            url = new URL(builder.build().toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
         HttpURLConnection urlConnection = null;
         try {
@@ -331,7 +336,7 @@ public final class PetUtils {
 
             if (urlConnection.getResponseCode() == 200) {
                 Log.e(LOG_TAG, "Success response code: " + urlConnection.getResponseCode());
-                newPetId = readFromStream(urlConnection.getInputStream());
+                //rowsDeleted = readFromStream(urlConnection.getInputStream());
             } else if (urlConnection.getResponseCode() == 408) {
                 urlConnection.disconnect();
                 urlConnection.connect();
@@ -339,13 +344,16 @@ public final class PetUtils {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem parsing data to database", e);
+            Log.e(LOG_TAG, "Problem deleting data from database", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }
-    }*/
+
+        //TODO implement return number of rows affected by delete
+        return 1;
+    }
 
 
     private static byte[] LoadImageFromWebOperations(String url) {
@@ -407,4 +415,71 @@ public final class PetUtils {
         }
     }
 
+    public static int updatePetInDatabase(String requestUrl, Pet pet, boolean isUploadingImage) {
+        if(isUploadingImage){
+            pet = pushImageToFTP(pet);
+        }
+
+        int updatedRows = 0;
+
+        URL url = createUpdateUrlWithParams(requestUrl, pet);
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.connect();
+
+            if (urlConnection.getResponseCode() == 200) {
+                Log.e(LOG_TAG, "Success response code: " + urlConnection.getResponseCode());
+                updatedRows = 1;
+            } else if (urlConnection.getResponseCode() == 408) {
+                urlConnection.disconnect();
+                urlConnection.connect();
+            } else {
+                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
+            }
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem parsing data to database", e);
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+
+        //TODO implement correct updatedRows
+        return updatedRows;
+    }
+
+    private static URL createUpdateUrlWithParams(String requestUrl, Pet pet) {
+        Uri uri = Uri.parse(requestUrl);
+        Uri.Builder builder = uri.buildUpon();
+        builder
+                .appendQueryParameter("idPet", String.valueOf(pet.getmId()))
+                .appendQueryParameter("species", String.valueOf(pet.getmSpecies()))
+                .appendQueryParameter("status", String.valueOf(pet.getmStatus()))
+                .appendQueryParameter("code", pet.getmCode())
+                .appendQueryParameter("name", pet.getmName())
+                .appendQueryParameter("status", String.valueOf(pet.getmStatus()))
+                .appendQueryParameter("gender", String.valueOf(pet.getmGender()))
+                .appendQueryParameter("height", String.valueOf(pet.getmHeight()))
+                .appendQueryParameter("birthYear", pet.getmBirthYear())
+                .appendQueryParameter("acceptanceDate", pet.getmAcceptanceDate())
+                .appendQueryParameter("sterilized", String.valueOf(pet.getmSterilized()))
+                .appendQueryParameter("summary", pet.getmSummary())
+                .appendQueryParameter("image", pet.getmImageUrl())
+                .appendQueryParameter("breed", pet.getmBreed())
+                .appendQueryParameter("contactNumber", pet.getmContactNumber());
+
+        URL url = null;
+        try {
+            url = new URL(builder.build().toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
 }

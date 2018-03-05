@@ -46,6 +46,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private Pet mPet;
 
+    private boolean isExistingPetFlag = false;
+    private boolean isUploadingImage = false;
+
     private ImageButton mImageButton;
     Uri mCropImageUri;
     Uri mResultUri;
@@ -89,6 +92,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mPet = (Pet) getIntent().getSerializableExtra("currentPet");
+            isExistingPetFlag = true;
         }
 
         mImageButton = findViewById(R.id.edit_pet_image);
@@ -115,7 +119,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         loaderManager = getSupportLoaderManager();
 
-        if (mPet == null) {
+        if (!isExistingPetFlag) {
             setTitle(getString(R.string.editor_activity_title_new_pet));
             invalidateOptionsMenu();
         } else {
@@ -135,9 +139,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mHeight = mPet.getmHeight();
         mStatus = mPet.getmStatus();
         mSterilized = mPet.getmSterilized();
-
-        //TODO set spinners to currentPet data
-        //mSpeciesSpinner.setSelection();
 
         mCodeEditText.setText(mPet.getmCode().equals("null") ? "" : mPet.getmCode());
         mNameEditText.setText(mPet.getmName().equals("null") ? "" : mPet.getmName());
@@ -179,6 +180,79 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mHeightSpinner.setAdapter(heightSpinnerAdapter);
         mStatusSpinner.setAdapter(statusSpinnerAdapter);
         mSterilizedSpinner.setAdapter(sterilizedSpinnerAdapter);
+
+        if(isExistingPetFlag){
+            String currentStringResource;
+            //species
+            if(mPet.getmSpecies() == PetEntry.SPECIES_DOG){
+                currentStringResource = getString(R.string.species_dog);
+            }else{
+                currentStringResource = getString(R.string.species_cat);
+            }
+
+            for(int i=0; i < speciesSpinnerAdapter.getCount(); i++) {
+                if(currentStringResource.trim().equals(speciesSpinnerAdapter.getItem(i).toString())){
+                    mSpeciesSpinner.setSelection(i);
+                    break;
+                }
+            }
+            //gender
+            if(mPet.getmGender() == PetEntry.GENDER_MALE){
+                currentStringResource = getString(R.string.gender_male);
+            }else{
+                currentStringResource = getString(R.string.gender_female);
+            }
+
+            for(int i=0; i < genderSpinnerAdapter.getCount(); i++) {
+                if(currentStringResource.trim().equals(genderSpinnerAdapter.getItem(i).toString())){
+                    mGenderSpinner.setSelection(i);
+                    break;
+                }
+            }
+            //height
+            if(mPet.getmHeight() == PetEntry.HEIGHT_SMALL){
+                currentStringResource = getString(R.string.height_small);
+            }else if(mPet.getmHeight() == PetEntry.HEIGHT_MEDIUM){
+                currentStringResource = getString(R.string.height_medium);
+            } else{
+                currentStringResource = getString(R.string.height_big);
+            }
+
+            for(int i=0; i < heightSpinnerAdapter.getCount(); i++) {
+                if(currentStringResource.trim().equals(heightSpinnerAdapter.getItem(i).toString())){
+                    mHeightSpinner.setSelection(i);
+                    break;
+                }
+            }
+            //status
+            if(mPet.getmStatus() == PetEntry.STATUS_ADOPTABLE){
+                currentStringResource = getString(R.string.status_adoptable);
+            }else if(mPet.getmStatus() == PetEntry.STATUS_QUARANTINE){
+                currentStringResource = getString(R.string.status_quarantine);
+            } else{
+                currentStringResource = getString(R.string.status_booked);
+            }
+
+            for(int i=0; i < statusSpinnerAdapter.getCount(); i++) {
+                if(currentStringResource.trim().equals(statusSpinnerAdapter.getItem(i).toString())){
+                    mStatusSpinner.setSelection(i);
+                    break;
+                }
+            }
+            //sterilized
+            if(mPet.getmSterilized() == PetEntry.STERILIZED_YES){
+                currentStringResource = getString(R.string.sterilized_yes);
+            }else{
+                currentStringResource = getString(R.string.sterilized_no);
+            }
+
+            for(int i=0; i < sterilizedSpinnerAdapter.getCount(); i++) {
+                if(currentStringResource.trim().equals(sterilizedSpinnerAdapter.getItem(i).toString())){
+                    mSterilizedSpinner.setSelection(i);
+                    break;
+                }
+            }
+        }
 
         // Set the integer mSelected to the constant values
         mSpeciesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -371,9 +445,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String imageUrl = "";
         if (mResultUri != null) {
             imageUrl = mResultUri.toString();
+            isUploadingImage = true;
+        } else if(isExistingPetFlag) {
+            imageUrl = mPet.getmImageUrl();
         }
 
-        mPet = new Pet(mSpecies, codeString, nameString, mStatus, mGender, mHeight, birthYearString, acceptanceDateString, mSterilized, summaryString, imageUrl, breedString, contactNumberString);
+        if(isExistingPetFlag){
+            mPet = new Pet(mPet.getmId(), mSpecies, codeString, nameString, mStatus, mGender,
+                    mHeight, birthYearString, acceptanceDateString, mSterilized, summaryString, imageUrl, breedString, contactNumberString);
+        } else{
+            mPet = new Pet(mSpecies, codeString, nameString, mStatus, mGender, mHeight,
+                    birthYearString, acceptanceDateString, mSterilized, summaryString, imageUrl, breedString, contactNumberString);
+        }
+
         loaderManager.initLoader(2, null, this);
 
 
@@ -410,7 +494,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
         Uri baseUri = Uri.parse(mUrl);
-        return new PetPostLoader(this, baseUri.toString(), mPet);
+        return new PetPostLoader(this, baseUri.toString(), mPet, isExistingPetFlag, isUploadingImage);
     }
 
     @Override
@@ -418,6 +502,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
         mPet = addedPet;
+
+        if(isExistingPetFlag){
+
+        }
         // Show a toast message depending on whether or not the insertion was successful.
         if (mPet.getmId() == 0) {
             // If the new content URI is null, then there was an error with insertion.
@@ -428,7 +516,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
                     Toast.LENGTH_SHORT).show();
         }
-        finish();
+        Intent intent = new Intent(this, SinglePetActivity.class);
+        intent.putExtra("currentPet", mPet);
+        startActivity(intent);
     }
 
     @Override

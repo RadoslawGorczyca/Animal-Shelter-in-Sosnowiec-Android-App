@@ -33,8 +33,13 @@ public class PetDeleteLoader extends AsyncTaskLoader<Pet> {
         if(android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
 
-        int newPetId = PetUtils.pushDataToDatabase(mUrl, mPet);
-        mPet.setmId(newPetId);
+
+        int rowsDeleted = PetUtils.deletePet(mUrl, mPet);
+        if(rowsDeleted == 0){
+            mPet = null;
+        }else{
+            mPet.setmId(0);
+        }
         return mPet;
     }
 }

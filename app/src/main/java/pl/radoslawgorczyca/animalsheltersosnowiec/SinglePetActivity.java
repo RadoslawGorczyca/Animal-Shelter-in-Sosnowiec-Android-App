@@ -1,14 +1,19 @@
 package pl.radoslawgorczyca.animalsheltersosnowiec;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -33,18 +37,39 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
 
     private Pet currentPet;
 
+    LoaderManager loaderManager;
+
+    ProgressDialog ringProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_pet_layout);
-
-        ImageLoader imageLoader = ImageLoader.getInstance();
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             currentPet = (Pet) getIntent().getSerializableExtra("currentPet");
         }
 
+        setupView();
+    }
+
+    /*@Override
+    protected void onPostResume() {
+        super.onPostResume();
+        setupView();
+    }*/
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent != null){
+            currentPet = (Pet) intent.getSerializableExtra("currentPet");
+        }
+        setupView();
+    }
+
+    private void setupView(){
         setTitle(currentPet.getmName());
 
         ImageView animalImage = findViewById(R.id.single_animal_image);
@@ -82,13 +107,6 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
             }
         });
 
-        /*reservationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Brak połączenia z serwerem. Spróbuj później.", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
         TextView genderTV = findViewById(R.id.gender);
         TextView sterilizedTitleTV = findViewById(R.id.sterilizedTitle);
         if(currentPet.getmGender() == PetContract.PetEntry.GENDER_MALE){
@@ -123,6 +141,8 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
 
         TextView summaryTV = findViewById(R.id.summary);
         summaryTV.setText(currentPet.getmSummary());
+
+        loaderManager = getSupportLoaderManager();
     }
 
     @Override
@@ -148,6 +168,7 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
             case R.id.action_delete:
 
                 deletePet();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -162,18 +183,56 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
 
     private void deletePet() {
 
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(R.string.delete_pet)
+                .setMessage(R.string.delete_pet_question)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        loaderManager.initLoader(3, null, SinglePetActivity.this);
+                        ringProgressDialog = ProgressDialog.show(
+                                SinglePetActivity.this,
+                                getString(R.string.deleting_pet),
+                                getString(R.string.please_wait),
+                                true);
+                        //you usually don't want the user to stop the current process, and this will make sure of that
+                        ringProgressDialog.setCancelable(false);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
     }
 
     @NonNull
     @Override
     public Loader<Pet> onCreateLoader(int id, @Nullable Bundle args) {
         Uri baseUri = Uri.parse(PetContract.SHELTER_DELETE_URL);
-        return new PetPostLoader(this, baseUri.toString(), currentPet);
+        return new PetDeleteLoader(this, baseUri.toString(), currentPet);
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<Pet> loader, Pet data) {
-
+    public void onLoadFinished(@NonNull Loader<Pet> loader, Pet pet) {
+        if (pet == null) {
+            // If the new content URI is null, then there was an error with insertion.
+            Toast.makeText(this, getString(R.string.delete_pet_failed),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            // Otherwise, the insertion was successful and we can display a toast.
+            Toast.makeText(this, getString(R.string.delete_pet_successful),
+                    Toast.LENGTH_SHORT).show();
+        }
+        ringProgressDialog.hide();
+        finish();
     }
 
     @Override

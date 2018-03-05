@@ -46,6 +46,13 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="no_pets_found">No pets found</string>
     <string name="delete">Delete</string>
+    <string name="delete_pet">Delete pet</string>
+    <string name="delete_pet_question">Are you sure you want to delete this pet?</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_pet_failed">Deleting pet failed</string>
+    <string name="delete_pet_successful">Pet deleted</string>
+    <string name="deleting_pet">Deleting pet</string>
+    <string name="please_wait">Please wait...</string>
 
 
 </resources>

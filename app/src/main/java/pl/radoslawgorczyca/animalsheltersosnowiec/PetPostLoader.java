@@ -13,11 +13,15 @@ public class PetPostLoader extends AsyncTaskLoader<Pet> {
 
     private String mUrl;
     private Pet mPet;
+    private boolean isUpdate;
+    private boolean isUploadingImage;
 
-    public PetPostLoader(Context context, String url, Pet pet) {
+    public PetPostLoader(Context context, String url, Pet pet, boolean isUpdate, boolean isUploadingImage) {
         super(context);
         this.mUrl = url;
         this.mPet = pet;
+        this.isUpdate = isUpdate;
+        this.isUploadingImage = isUploadingImage;
     }
 
     @Override
@@ -33,8 +37,19 @@ public class PetPostLoader extends AsyncTaskLoader<Pet> {
         if(android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
 
-        int newPetId = PetUtils.pushDataToDatabase(mUrl, mPet);
-        mPet.setmId(newPetId);
-        return mPet;
+        int updatedRows = 0;
+        int newPetId = 0;
+
+        Pet newPet = mPet;
+        if (isUpdate) {
+            PetUtils.updatePetInDatabase(mUrl, mPet, isUploadingImage);
+
+        }else{
+            newPetId = PetUtils.pushDataToDatabase(mUrl, mPet);
+            newPet = mPet;
+            newPet.setmId(newPetId);
+        }
+
+        return newPet;
     }
 }
