@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.content.CursorLoader;
 import android.support.v4.app.FragmentActivity;
@@ -40,6 +41,8 @@ import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract.PetEntry;
 import pl.radoslawgorczyca.animalsheltersosnowiec.utils.PetUtils;
 import pl.radoslawgorczyca.animalsheltersosnowiec.PetLoader;
 
+import static android.view.View.Y;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -50,6 +53,8 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
     private PetAdapter mAdapter;
     private TextView mEmptyStateTextView;
     private ProgressBar mProgressIndicator;
+    GridView petGridView;
+    public static Parcelable state;
 
 
     @Override
@@ -57,7 +62,7 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.grid_view, container, false);
 
-        GridView petGridView = rootView.findViewById(R.id.grid_view);
+        petGridView = rootView.findViewById(R.id.grid_view);
         mAdapter = new PetAdapter(getActivity(), new ArrayList<Pet>());
         petGridView.setAdapter(mAdapter);
 
@@ -67,6 +72,7 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
 
                 Pet selectedPet = mAdapter.getItem(i);
 
+                state = petGridView.onSaveInstanceState();
                 Intent intent = new Intent(getActivity(), SinglePetActivity.class);
                 intent.putExtra("currentPet", selectedPet);
                 startActivity(intent);
@@ -92,6 +98,15 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (petGridView != null && state != null) {
+            petGridView.onRestoreInstanceState(state);
+        }
+
+    }
+
 
     @Override
     public android.support.v4.content.Loader<List<Pet>> onCreateLoader(int id, Bundle args) {
@@ -112,6 +127,10 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
                     mAdapter.add(pets.get(i));
                 }
             }
+        }
+
+        if (petGridView != null && state != null) {
+            petGridView.onRestoreInstanceState(state);
         }
 
         mEmptyStateTextView.setText(R.string.no_pets_found);

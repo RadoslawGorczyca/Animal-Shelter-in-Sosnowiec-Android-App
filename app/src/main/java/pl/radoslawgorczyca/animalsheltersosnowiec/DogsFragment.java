@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.content.CursorLoader;
 import android.support.v4.app.FragmentActivity;
@@ -51,13 +52,16 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
     private TextView mEmptyStateTextView;
     private ProgressBar mProgressIndicator;
 
+    GridView petGridView;
+    public static Parcelable state;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.grid_view, container, false);
 
-        GridView petGridView = rootView.findViewById(R.id.grid_view);
+        petGridView = rootView.findViewById(R.id.grid_view);
         mAdapter = new PetAdapter(getActivity(), new ArrayList<Pet>());
         petGridView.setAdapter(mAdapter);
 
@@ -68,6 +72,7 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
 
                 Pet selectedPet = mAdapter.getItem(i);
 
+                state = petGridView.onSaveInstanceState();
                 Intent intent = new Intent(getActivity(), SinglePetActivity.class);
                 intent.putExtra("currentPet", selectedPet);
                 startActivity(intent);
@@ -86,7 +91,7 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
         if (isConnected) {
             getLoaderManager().initLoader(PET_LOADER, null, this);
 
-        }else {
+        } else {
             mProgressIndicator.setVisibility(View.GONE);
             mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
@@ -94,6 +99,14 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (petGridView != null && state != null) {
+            petGridView.onRestoreInstanceState(state);
+        }
+
+    }
 
     @Override
     public android.support.v4.content.Loader<List<Pet>> onCreateLoader(int id, Bundle args) {
@@ -116,6 +129,9 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
             }
         }
 
+        if (petGridView != null && state != null) {
+            petGridView.onRestoreInstanceState(state);
+        }
         mEmptyStateTextView.setText(R.string.no_pets_found);
     }
 

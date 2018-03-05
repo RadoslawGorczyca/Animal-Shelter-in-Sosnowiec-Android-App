@@ -53,6 +53,8 @@
     <string name="delete_pet_successful">Pet deleted</string>
     <string name="deleting_pet">Deleting pet</string>
     <string name="please_wait">Please wait...</string>
+    <string name="editing_pet">Editing pet</string>
+    <string name="adding_pet">Adding pet</string>
 
 
 </resources>

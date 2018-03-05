@@ -3,6 +3,7 @@ package pl.radoslawgorczyca.animalsheltersosnowiec;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -41,6 +42,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private static final int EXISTING_PET_LOADER = 0;
 
     LoaderManager loaderManager;
+    ProgressDialog ringProgressDialog;
 
     private String mUrl;
 
@@ -418,6 +420,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private void savePet() {
 
+        ringProgressDialog = ProgressDialog.show(
+                EditorActivity.this,
+                getString(isExistingPetFlag ? R.string.editing_pet : R.string.adding_pet),
+                getString(R.string.please_wait),
+                true);
+        //you usually don't want the user to stop the current process, and this will make sure of that
+        ringProgressDialog.setCancelable(false);
+
         String codeString = mCodeEditText.getText().toString().trim();
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
@@ -516,6 +526,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
                     Toast.LENGTH_SHORT).show();
         }
+        ringProgressDialog.hide();
         Intent intent = new Intent(this, SinglePetActivity.class);
         intent.putExtra("currentPet", mPet);
         startActivity(intent);
