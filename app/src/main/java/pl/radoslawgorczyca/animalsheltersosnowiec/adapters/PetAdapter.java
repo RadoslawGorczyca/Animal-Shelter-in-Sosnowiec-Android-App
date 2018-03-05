@@ -1,4 +1,4 @@
-package pl.radoslawgorczyca.animalsheltersosnowiec;
+package pl.radoslawgorczyca.animalsheltersosnowiec.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -24,6 +24,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+
+import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.R;
 
 /**
  * Created by Radek on 24-Jan-18.

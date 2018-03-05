@@ -1,10 +1,11 @@
-package pl.radoslawgorczyca.animalsheltersosnowiec;
+package pl.radoslawgorczyca.animalsheltersosnowiec.adapters;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import pl.radoslawgorczyca.animalsheltersosnowiec.fragments.CatsFragment;
+import pl.radoslawgorczyca.animalsheltersosnowiec.fragments.DogsFragment;
 
 /**
  * Created by Radek on 17-Dec-17.

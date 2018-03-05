@@ -2,12 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.EditorActivity">
+    tools:context=".activities.MainActivity">
 
     <item
-        android:id="@+id/action_save"
-        android:title="Save"
-        app:showAsAction="always"
-        android:icon="@drawable/action_save"/>
+        android:id="@+id/action_sign_in"
+        android:title="@string/sign_in"
+        app:showAsAction="never"/>
 
 </menu>

@@ -1,18 +1,18 @@
-package pl.radoslawgorczyca.animalsheltersosnowiec;
+package pl.radoslawgorczyca.animalsheltersosnowiec.activities;
 
 import android.content.Intent;
-import android.media.Image;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
-import android.widget.ListView;
 
 
-import java.util.ArrayList;
+import pl.radoslawgorczyca.animalsheltersosnowiec.adapters.CategoryFragmentPagerAdapter;
+import pl.radoslawgorczyca.animalsheltersosnowiec.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,5 +48,25 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu options from the res/menu/menu_editor.xml file.
+        // This adds menu items to the app bar.
+        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            case R.id.action_sign_in:
+                startActivity(new Intent(this, LoggingActivity.class));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

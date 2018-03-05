@@ -1,4 +1,4 @@
-package pl.radoslawgorczyca.animalsheltersosnowiec;
+package pl.radoslawgorczyca.animalsheltersosnowiec.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -30,6 +30,9 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetPostLoader;
+import pl.radoslawgorczyca.animalsheltersosnowiec.R;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract.PetEntry;
 

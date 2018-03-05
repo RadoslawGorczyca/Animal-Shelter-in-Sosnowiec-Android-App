@@ -55,6 +55,11 @@
     <string name="please_wait">Please wait...</string>
     <string name="editing_pet">Editing pet</string>
     <string name="adding_pet">Adding pet</string>
+    <string name="sign_in">Sign in</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="welcome_volunteer">Welcome, volunteer!</string>
+    <string name="mail">E-mail</string>
 
 
 </resources>

@@ -1,11 +1,10 @@
-package pl.radoslawgorczyca.animalsheltersosnowiec;
+package pl.radoslawgorczyca.animalsheltersosnowiec.loaders;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.support.v4.content.Loader;
 
 import java.util.List;
 
+import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.utils.PetUtils;
 
 /**

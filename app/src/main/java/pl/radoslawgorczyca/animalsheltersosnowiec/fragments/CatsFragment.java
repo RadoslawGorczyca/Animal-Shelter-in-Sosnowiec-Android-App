@@ -1,28 +1,17 @@
-package pl.radoslawgorczyca.animalsheltersosnowiec;
+package pl.radoslawgorczyca.animalsheltersosnowiec.fragments;
 
-
-import android.content.AsyncTaskLoader;
-import android.content.Context;
 
 import android.content.Intent;
 
 
-import android.content.Loader;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
-import android.content.CursorLoader;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.CursorAdapter;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,18 +19,16 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.adapters.PetAdapter;
+import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetLoader;
+import pl.radoslawgorczyca.animalsheltersosnowiec.R;
+import pl.radoslawgorczyca.animalsheltersosnowiec.activities.SinglePetActivity;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract.PetEntry;
-import pl.radoslawgorczyca.animalsheltersosnowiec.utils.PetUtils;
-import pl.radoslawgorczyca.animalsheltersosnowiec.PetLoader;
-
-import static android.view.View.Y;
 
 /**
  * A simple {@link Fragment} subclass.

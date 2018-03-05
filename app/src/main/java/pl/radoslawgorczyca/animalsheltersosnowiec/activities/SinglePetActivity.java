@@ -1,11 +1,8 @@
-package pl.radoslawgorczyca.animalsheltersosnowiec;
+package pl.radoslawgorczyca.animalsheltersosnowiec.activities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,8 +22,9 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
+import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetDeleteLoader;
+import pl.radoslawgorczyca.animalsheltersosnowiec.R;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
 
 /**
