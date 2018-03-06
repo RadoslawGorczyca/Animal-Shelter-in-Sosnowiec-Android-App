@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
         session = new UserSession(getApplicationContext());
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        if(session.isUserLoggedIn()){
+            session.logoutUser();
+        }
+
         // Setup FAB to open EditorActivity
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

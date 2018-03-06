@@ -90,6 +90,9 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
         TextView animalName = findViewById(R.id.single_animal_name);
         animalName.setText(currentPet.getmName());
 
+        TextView animalCode = findViewById(R.id.single_animal_code);
+        animalCode.setText(currentPet.getmCode());
+
         //Button reservationButton = findViewById(R.id.reservation);
         ImageView statusIcon = findViewById(R.id.single_animal_status_icon);
         TextView animalStatusTextView = findViewById(R.id.single_animal_status);
@@ -136,6 +139,9 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
         } else {
             heightTV.setText(R.string.height_big);
         }
+
+        TextView breedTV = findViewById(R.id.breed);
+        breedTV.setText(currentPet.getmBreed());
 
         TextView birthYearTV = findViewById(R.id.birth_year);
         birthYearTV.setText(currentPet.getmBirthYear());

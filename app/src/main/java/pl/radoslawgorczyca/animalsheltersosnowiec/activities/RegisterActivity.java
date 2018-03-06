@@ -38,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
     private EditText passwordET;
     private EditText repeatPasswordET;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +50,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
         loaderManager = getSupportLoaderManager();
 
-        nameET = (EditText) findViewById(R.id.name);
-        surnameET = (EditText) findViewById(R.id.surname);
-        emailET = (EditText) findViewById(R.id.email);
-        passwordET = (EditText) findViewById(R.id.password);
-        repeatPasswordET = (EditText) findViewById(R.id.repeat_password);
-        Button registerButton = (Button) findViewById(R.id.register);
+        nameET = findViewById(R.id.name);
+        surnameET = findViewById(R.id.surname);
+        emailET = findViewById(R.id.email);
+        passwordET = findViewById(R.id.password);
+        repeatPasswordET = findViewById(R.id.repeat_password);
+        Button registerButton = findViewById(R.id.register);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,14 +65,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         });
     }
 
+
     private void addUser() {
         String name = nameET.getText().toString().trim();
         String surname = surnameET.getText().toString().trim();
         String email = emailET.getText().toString().trim();
         String password = passwordET.getText().toString().trim();
         String repeatPassword = passwordET.getText().toString().trim();
-
-        //TODO Make this code robust
 
         try {
             password = AESCrypt.encrypt(password);

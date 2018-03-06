@@ -445,6 +445,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 TextUtils.isEmpty(breedString) && TextUtils.isEmpty(summaryString) &&
                 TextUtils.isEmpty(birthYearString) && TextUtils.isEmpty(acceptanceDateString) &&
                 TextUtils.isEmpty(contactNumberString)) {
+            ringProgressDialog.hide();
             return;
         }
 
@@ -524,15 +525,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // If the new content URI is null, then there was an error with insertion.
             Toast.makeText(this, getString(R.string.editor_insert_pet_failed),
                     Toast.LENGTH_SHORT).show();
+            ringProgressDialog.hide();
         } else {
             // Otherwise, the insertion was successful and we can display a toast.
             Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
                     Toast.LENGTH_SHORT).show();
+            ringProgressDialog.hide();
+            Intent intent = new Intent(this, SinglePetActivity.class);
+            intent.putExtra("currentPet", mPet);
+            startActivity(intent);
         }
         ringProgressDialog.hide();
-        Intent intent = new Intent(this, SinglePetActivity.class);
-        intent.putExtra("currentPet", mPet);
-        startActivity(intent);
     }
 
     @Override

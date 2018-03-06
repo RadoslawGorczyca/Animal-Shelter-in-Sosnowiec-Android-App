@@ -68,6 +68,16 @@
     <string name="log_out">Log out</string>
     <string name="successfuly_logged_out">Successfuly logged out</string>
     <string name="hello">Hello</string>
+    <string name="species">Species</string>
+    <string name="status">Status</string>
+    <string name="overview">Overview</string>
+    <string name="code">Code</string>
+    <string name="breed">Breed</string>
+    <string name="contact_number">Contact number</string>
+    <string name="sterilization">Sterilization</string>
+    <string name="email_not_found">Email not found in database</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="login_successful">Login successful</string>
 
 
 </resources>

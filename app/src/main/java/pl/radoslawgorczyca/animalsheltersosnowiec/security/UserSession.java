@@ -3,6 +3,7 @@ package pl.radoslawgorczyca.animalsheltersosnowiec.security;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import java.util.HashMap;
 
@@ -122,6 +123,7 @@ public class UserSession {
     public void logoutUser(){
 
         // Clearing all user data from Shared Preferences
+        String email = pref.getString(KEY_EMAIL, null);
         editor.clear();
         editor.commit();
 
@@ -133,6 +135,8 @@ public class UserSession {
 
         // Add new Flag to start new Activity
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        editor.putString(email, null);
+        editor.commit();
 
         // Staring Login Activity
         _context.startActivity(i);

@@ -54,19 +54,20 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
 
         loaderManager = getSupportLoaderManager();
 
-        emailET = (EditText) findViewById(R.id.login_email);
-        passwordET = (EditText) findViewById(R.id.login_password);
+        emailET = findViewById(R.id.login_email);
+        passwordET = findViewById(R.id.login_password);
 
         session = new UserSession(getApplicationContext());
-
-        Toast.makeText(getApplicationContext(),
-                "User Login Status: " + session.isUserLoggedIn(),
-                Toast.LENGTH_LONG).show();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 
-        Button loginButton = (Button) findViewById(R.id.login);
+        String savedEmail = sharedPreferences.getString("email", "");
+        if(!savedEmail.equals("")){
+            emailET.setText(savedEmail);
+        }
+
+        Button loginButton = findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,19 +80,19 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        Button registerButton = (Button) findViewById(R.id.go_to_register);
+        /*Button registerButton = (Button) findViewById(R.id.go_to_register);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoggingActivity.this, RegisterActivity.class));
             }
-        });
+        });*/
     }
 
     private void login() {
 
         if(fetchedUser == null){
-            Toast.makeText(this, "No user with this email found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.email_not_found), Toast.LENGTH_SHORT).show();
         } else {
             String fetchedDecryptedPassword = "";
             try {
@@ -101,9 +102,9 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
             }
 
             if(!fetchedDecryptedPassword.equals(password)){
-                Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.login_successful, Toast.LENGTH_SHORT).show();
                 session.createUserLoginSession(fetchedUser.getEmail(), fetchedUser.getPassword(), fetchedUser.getName(), fetchedUser.getSurname());
                 editor.putString("name", fetchedUser.getName());
                 editor.putString("surname", fetchedUser.getSurname());

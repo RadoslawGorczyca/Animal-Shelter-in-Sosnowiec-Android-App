@@ -10,13 +10,12 @@
         android:orientation="vertical">
 
 
-        <ImageView
+        <pl.radoslawgorczyca.animalsheltersosnowiec.items.GridViewItem
             android:id="@+id/single_animal_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:minHeight="336dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/cat1" />
+            android:src="@mipmap/ic_launcher" />
 
         <!--<LinearLayout
             android:layout_width="match_parent"
@@ -50,9 +49,19 @@
             android:textSize="30dp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/single_animal_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="01/2018"
+            android:textSize="20dp"
+            android:textStyle="italic" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -79,96 +88,6 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:background="#555555" />
-
-        <!-- <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:orientation="horizontal"
-             android:paddingTop="8dp">
-
-             <LinearLayout
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:orientation="vertical"
-                 android:padding="8dp">
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Wielkość: " />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Data urodzenia: " />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Sterylizacja: " />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Choroby: " />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Data przyjęcia: " />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Opis: " />
-
-             </LinearLayout>
-
-             <LinearLayout
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:orientation="vertical"
-                 android:padding="8dp">
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Mała " />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="listopad 2016" />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Tak" />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Brak" />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="12.12.2017" />
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Emilka to piękna trikolorka, dużych rozmiarów kocica. Została oddana prosto z domu. Osoba, która się nią opiekowała trafiła do hospicjum. Oczywiście na początku była zdziwiona co się z nią dzieje.
-
- Obecnie już po części się u nas zaaklimatyzowała. Jest to prawdziwa dumna kocica z silnym charakterem. Ociera się, mruczy, przytula - głaskaj mnie. Lecz jeśli nie ma akurat na to ochoty to pokaże jednoznacznie o co jej chodzi pacając łapką lub odstraszając prychnięciem.
-
- Szukamy dla niej spokojnego domu, który będzie dobrze ją traktował i dawał wszystko co najlepsze.
-
- Emilia zawsze była sama ze swoją Panią i dlatego nie lubi rozbrykanych maluchów i aktywnych doroślaków dlatego wymarzonym domem był by dom, w którym będzie ona gwiazdą. Ewentualnie będzie mieć za przyjaciela kota statecznego." />
-
-             </LinearLayout>
-
-         </LinearLayout>-->
 
         <TableLayout
             android:layout_width="match_parent"
@@ -211,6 +130,24 @@
                     android:layout_weight="2"
                     android:paddingLeft="4dp"
                     android:text="Small" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/breed"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/breed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:paddingLeft="4dp"
+                    android:text="Owczarek niemiecki" />
             </TableRow>
 
             <TableRow>
