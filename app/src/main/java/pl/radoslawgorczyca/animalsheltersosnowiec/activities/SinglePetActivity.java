@@ -3,6 +3,7 @@ package pl.radoslawgorczyca.animalsheltersosnowiec.activities;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import pl.radoslawgorczyca.animalsheltersosnowiec.security.UserSession;
 import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetDeleteLoader;
 import pl.radoslawgorczyca.animalsheltersosnowiec.R;
@@ -39,10 +41,19 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
 
     ProgressDialog ringProgressDialog;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    UserSession session;
+
+    MenuItem actionEditPet;
+    MenuItem actionDeletePet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_pet_layout);
+
+        session = new UserSession(getApplicationContext());
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -50,13 +61,15 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
         }
 
         setupView();
+
+        invalidateOptionsMenu();
     }
 
-    /*@Override
+    @Override
     protected void onPostResume() {
         super.onPostResume();
-        setupView();
-    }*/
+        invalidateOptionsMenu();
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -144,10 +157,27 @@ public class SinglePetActivity extends AppCompatActivity implements LoaderManage
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(session.isUserLoggedIn()){
+            actionEditPet.setVisible(true);
+            actionDeletePet.setVisible(true);
+        }else{
+            actionEditPet.setVisible(false);
+            actionDeletePet.setVisible(false);
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_single_pet, menu);
+
+        actionEditPet = menu.findItem(R.id.action_edit);
+        actionDeletePet = menu.findItem(R.id.action_delete);
+
         return true;
     }
 

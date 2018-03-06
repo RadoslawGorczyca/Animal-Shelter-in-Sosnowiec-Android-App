@@ -65,6 +65,9 @@
     <string name="register">Register</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
+    <string name="log_out">Log out</string>
+    <string name="successfuly_logged_out">Successfuly logged out</string>
+    <string name="hello">Hello</string>
 
 
 </resources>

@@ -37,4 +37,9 @@ public class GetUserLoader extends AsyncTaskLoader<User> {
 
         return mUser;
     }
+
+    @Override
+    protected void onReset() {
+        forceLoad();
+    }
 }

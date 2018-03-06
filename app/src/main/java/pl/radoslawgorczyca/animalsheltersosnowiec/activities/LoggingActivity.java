@@ -1,8 +1,11 @@
 package pl.radoslawgorczyca.animalsheltersosnowiec.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -17,6 +20,7 @@ import pl.radoslawgorczyca.animalsheltersosnowiec.R;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
 import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.GetUserLoader;
 import pl.radoslawgorczyca.animalsheltersosnowiec.security.AESCrypt;
+import pl.radoslawgorczyca.animalsheltersosnowiec.security.UserSession;
 import pl.radoslawgorczyca.animalsheltersosnowiec.types.User;
 
 /**
@@ -27,6 +31,11 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
 
     LoaderManager loaderManager;
 
+    private static final String PREFER_NAME = "Reg";
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    UserSession session;
+
     private EditText emailET;
     private EditText passwordET;
 
@@ -34,6 +43,8 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
     String password;
 
     User fetchedUser;
+
+    boolean isLoaderInitialized = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,13 +57,25 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
         emailET = (EditText) findViewById(R.id.login_email);
         passwordET = (EditText) findViewById(R.id.login_password);
 
+        session = new UserSession(getApplicationContext());
+
+        Toast.makeText(getApplicationContext(),
+                "User Login Status: " + session.isUserLoggedIn(),
+                Toast.LENGTH_LONG).show();
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+
         Button loginButton = (Button) findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = emailET.getText().toString().trim();
-                password = passwordET.getText().toString().trim();
-                loaderManager.initLoader(7, null, LoggingActivity.this);
+                if(!isLoaderInitialized){
+                    loaderManager.initLoader(7, null, LoggingActivity.this);
+                    isLoaderInitialized = true;
+                }else {
+                    loaderManager.restartLoader(7, null, LoggingActivity.this);
+                }
             }
         });
 
@@ -81,6 +104,13 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
                 Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                session.createUserLoginSession(fetchedUser.getEmail(), fetchedUser.getPassword(), fetchedUser.getName(), fetchedUser.getSurname());
+                editor.putString("name", fetchedUser.getName());
+                editor.putString("surname", fetchedUser.getSurname());
+                editor.putString("email",fetchedUser.getEmail());
+                editor.putString("password",fetchedUser.getPassword());
+                editor.commit();
+                finish();
             }
         }
     }
@@ -88,7 +118,8 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
     @NonNull
     @Override
     public Loader<User> onCreateLoader(int id, @Nullable Bundle args) {
-
+        email = emailET.getText().toString().trim();
+        password = passwordET.getText().toString().trim();
         return new GetUserLoader(this, PetContract.SHELTER_USER_GET_URL, email);
     }
 

@@ -1,5 +1,6 @@
 package pl.radoslawgorczyca.animalsheltersosnowiec.activities;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;
 import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.NewUserLoader;
 import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetPostLoader;
 import pl.radoslawgorczyca.animalsheltersosnowiec.security.AESCrypt;
+import pl.radoslawgorczyca.animalsheltersosnowiec.security.UserSession;
 import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.types.User;
 
@@ -93,10 +95,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
         if(addedUser.getIdUser() != 0){
             Toast.makeText(this, "User added", Toast.LENGTH_SHORT).show();
+            finish();
         } else{
             Toast.makeText(this, "User adding failed", Toast.LENGTH_SHORT).show();
         }
-        finish();
     }
 
     @Override
