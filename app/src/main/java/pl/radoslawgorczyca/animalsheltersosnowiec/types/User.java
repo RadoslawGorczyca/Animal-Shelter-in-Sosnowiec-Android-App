@@ -18,11 +18,7 @@ public class User {
         this.email = email;
         this.name = name;
         this.surname = surname;
-        try {
-            this.password = AESCrypt.encrypt(password);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.password = password;
     }
 
     public long getIdUser() {

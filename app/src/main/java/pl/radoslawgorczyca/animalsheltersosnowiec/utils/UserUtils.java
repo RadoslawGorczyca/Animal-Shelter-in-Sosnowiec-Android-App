@@ -48,6 +48,10 @@ public class UserUtils {
     }
 
     private static URL createGetUserUrl(String requestUrl, String login) {
+
+        if (android.os.Debug.isDebuggerConnected())
+            android.os.Debug.waitForDebugger();
+
         Uri uri = Uri.parse(requestUrl);
         Uri.Builder builder = uri.buildUpon();
         builder
@@ -115,6 +119,9 @@ public class UserUtils {
     }
 
     private static User extractUser(String JSONResponse) {
+
+        if (android.os.Debug.isDebuggerConnected())
+            android.os.Debug.waitForDebugger();
 
         if (TextUtils.isEmpty(JSONResponse)) {
             return null;
@@ -187,6 +194,9 @@ public class UserUtils {
     }
 
     private static URL createInsertUserUrl(String requestUrl, User newUser) {
+
+        if (android.os.Debug.isDebuggerConnected())
+            android.os.Debug.waitForDebugger();
 
         Uri uri = Uri.parse(requestUrl);
         Uri.Builder builder = uri.buildUpon();

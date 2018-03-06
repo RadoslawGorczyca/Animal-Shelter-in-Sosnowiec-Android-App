@@ -96,6 +96,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         } else{
             Toast.makeText(this, "User adding failed", Toast.LENGTH_SHORT).show();
         }
+        finish();
     }
 
     @Override
