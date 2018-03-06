@@ -3,12 +3,8 @@ package pl.radoslawgorczyca.animalsheltersosnowiec.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +14,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.R;
 
 /**

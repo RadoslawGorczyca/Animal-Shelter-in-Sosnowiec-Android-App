@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="1dp">
 
-    <pl.radoslawgorczyca.animalsheltersosnowiec.GridViewItem
+    <pl.radoslawgorczyca.animalsheltersosnowiec.items.GridViewItem
         android:id="@+id/animal_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

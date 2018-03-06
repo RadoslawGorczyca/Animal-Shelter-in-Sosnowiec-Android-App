@@ -22,7 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.adapters.PetAdapter;
 import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetLoader;
 import pl.radoslawgorczyca.animalsheltersosnowiec.R;

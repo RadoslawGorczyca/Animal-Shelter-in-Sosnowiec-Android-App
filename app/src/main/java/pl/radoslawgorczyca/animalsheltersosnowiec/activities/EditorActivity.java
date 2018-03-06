@@ -30,7 +30,7 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetPostLoader;
 import pl.radoslawgorczyca.animalsheltersosnowiec.R;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;

@@ -1,4 +1,4 @@
-package pl.radoslawgorczyca.animalsheltersosnowiec;
+package pl.radoslawgorczyca.animalsheltersosnowiec.items;
 
 import android.content.Context;
 import android.util.AttributeSet;

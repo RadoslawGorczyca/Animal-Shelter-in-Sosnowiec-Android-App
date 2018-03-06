@@ -27,6 +27,12 @@ public class PetContract {
     public static final String SHELTER_DELETE_URL =
             "http://gorczyca.org/schronisko-sosnowiec/deleteData.php";
 
+    public static final String SHELTER_USER_GET_URL =
+            "http://gorczyca.org/schronisko-sosnowiec/getUserJson.php";
+
+    public static final String SHELTER_USER_INSERT_URL =
+            "http://gorczyca.org/schronisko-sosnowiec/insertUser.php";
+
     public static final String FTP_URL =
             "ftp.gorczyca.org";
 
@@ -67,7 +73,7 @@ public class PetContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PETS;
 
-        public final static String TABLE_NAME = "pets";
+        public final static String TABLE_NAME = "Pet";
 
         public final static String _ID = BaseColumns._ID;
 
@@ -133,5 +139,20 @@ public class PetContract {
         public static boolean isValidSterilized(int sterilized) {
             return sterilized == STERILIZED_YES || sterilized == STERILIZED_NO;
         }
+    }
+
+    public static final class UserEntry implements BaseColumns {
+        public final static String TABLE_NAME = "User";
+
+        public final static String COLUMN_USER_ID = "idUser";
+
+        public final static String COLUMN_USER_EMAIL = "email";
+
+        public final static String COLUMN_USER_NAME = "name";
+
+        public final static String COLUMN_USER_SURNAME = "surname";
+
+        public final static String COLUMN_USER_PASSWORD = "password";
+
     }
 }

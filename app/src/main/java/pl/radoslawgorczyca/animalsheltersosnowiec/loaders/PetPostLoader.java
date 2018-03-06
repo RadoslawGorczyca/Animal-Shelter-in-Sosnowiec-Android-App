@@ -3,7 +3,7 @@ package pl.radoslawgorczyca.animalsheltersosnowiec.loaders;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.utils.PetUtils;
 
 /**

@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetDeleteLoader;
 import pl.radoslawgorczyca.animalsheltersosnowiec.R;
 import pl.radoslawgorczyca.animalsheltersosnowiec.data.PetContract;

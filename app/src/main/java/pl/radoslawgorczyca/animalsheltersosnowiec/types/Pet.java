@@ -1,4 +1,4 @@
-package pl.radoslawgorczyca.animalsheltersosnowiec;
+package pl.radoslawgorczyca.animalsheltersosnowiec.types;
 
 import android.graphics.Bitmap;
 

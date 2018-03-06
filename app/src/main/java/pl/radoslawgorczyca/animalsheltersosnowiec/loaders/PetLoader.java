@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
-import pl.radoslawgorczyca.animalsheltersosnowiec.Pet;
+import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.utils.PetUtils;
 
 /**
