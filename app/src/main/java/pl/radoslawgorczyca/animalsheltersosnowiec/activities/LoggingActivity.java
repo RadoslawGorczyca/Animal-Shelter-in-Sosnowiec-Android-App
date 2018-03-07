@@ -1,5 +1,6 @@
 package pl.radoslawgorczyca.animalsheltersosnowiec.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +31,7 @@ import pl.radoslawgorczyca.animalsheltersosnowiec.types.User;
 public class LoggingActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<User> {
 
     LoaderManager loaderManager;
+    ProgressDialog ringProgressDialog;
 
     private static final String PREFER_NAME = "Reg";
     SharedPreferences sharedPreferences;
@@ -119,6 +121,13 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
     @NonNull
     @Override
     public Loader<User> onCreateLoader(int id, @Nullable Bundle args) {
+        ringProgressDialog = ProgressDialog.show(
+                LoggingActivity.this,
+                getString(R.string.logging),
+                getString(R.string.please_wait),
+                true);
+        //you usually don't want the user to stop the current process, and this will make sure of that
+        ringProgressDialog.setCancelable(false);
         email = emailET.getText().toString().trim();
         password = passwordET.getText().toString().trim();
         return new GetUserLoader(this, PetContract.SHELTER_USER_GET_URL, email);
@@ -127,6 +136,7 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoadFinished(@NonNull Loader<User> loader, User data) {
         fetchedUser = data;
+        ringProgressDialog.hide();
         login();
     }
 

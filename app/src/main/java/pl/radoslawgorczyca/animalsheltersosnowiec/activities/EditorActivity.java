@@ -10,10 +10,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,6 +33,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.w3c.dom.Text;
 
 import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetPostLoader;
@@ -64,19 +70,35 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private Spinner mStatusSpinner;
     private Spinner mSterilizedSpinner;
 
-    private EditText mCodeEditText;
-    private EditText mNameEditText;
-    private EditText mBreedEditText;
-    private EditText mSummaryEditText;
-    private EditText mBirthYearEditText;
-    private EditText mAcceptanceDateEditText;
-    private EditText mContactNumberEditText;
+    //private EditText mCodeEditText;
+    private TextInputEditText mCodeEditText;
+    private TextInputLayout mCodeEditTextLayout;
+    private TextInputEditText mNameEditText;
+    private TextInputLayout mNameEditTextLayout;
+    private TextInputEditText mBreedEditText;
+    private TextInputLayout mBreedTextLayout;
+    private TextInputEditText mSummaryEditText;
+    private TextInputLayout mSummaryTextLayout;
+    private TextInputEditText mBirthYearEditText;
+    private TextInputLayout mBirthYearTextLayout;
+    private TextInputEditText mAcceptanceDateEditText;
+    private TextInputLayout mAcceptanceDateTextLayout;
+    private TextInputEditText mContactNumberEditText;
+    private TextInputLayout mContactNumberTextLayout;
 
     private int mSpecies = PetEntry.SPECIES_DOG;
     private int mGender = PetEntry.GENDER_MALE;
     private int mHeight = PetEntry.HEIGHT_SMALL;
     private int mStatus = PetEntry.STATUS_ADOPTABLE;
     private int mSterilized = PetEntry.STERILIZED_YES;
+
+    String codeString;
+    String nameString;
+    String breedString;
+    String summaryString;
+    String birthYearString;
+    String acceptanceDateString;
+    String contactNumberString;
 
     private boolean mPetHasChanged = false;
 
@@ -115,12 +137,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSterilizedSpinner = findViewById(R.id.spinner_sterilized);
 
         mCodeEditText = findViewById(R.id.edit_pet_code);
+        mCodeEditTextLayout = findViewById(R.id.edit_pet_code_layout);
         mNameEditText = findViewById(R.id.edit_pet_name);
+        mNameEditTextLayout = findViewById(R.id.edit_pet_name_layout);
         mBreedEditText = findViewById(R.id.edit_pet_breed);
+        mBreedTextLayout = findViewById(R.id.edit_pet_breed_layout);
         mSummaryEditText = findViewById(R.id.edit_pet_summary);
+        mSummaryTextLayout = findViewById(R.id.edit_pet_summary_layout);
         mBirthYearEditText = findViewById(R.id.edit_pet_birth_year);
+        mBirthYearTextLayout = findViewById(R.id.edit_pet_birth_year_layout);
         mAcceptanceDateEditText = findViewById(R.id.edit_pet_acceptance_date);
+        mAcceptanceDateTextLayout = findViewById(R.id.edit_pet_acceptance_date_layout);
         mContactNumberEditText = findViewById(R.id.edit_pet_contact_number);
+        mContactNumberTextLayout = findViewById(R.id.edit_pet_contact_number_layout);
+
+        setupInputListeners();
 
         loaderManager = getSupportLoaderManager();
 
@@ -135,6 +166,135 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         setupSpinners();
 
+    }
+
+    private void setupInputListeners() {
+
+        mCodeEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mCodeEditTextLayout.setError(null);
+                mCodeEditTextLayout.setHintEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mNameEditTextLayout.setError(null);
+                mNameEditTextLayout.setHintEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mBreedEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mBreedTextLayout.setError(null);
+                mBreedTextLayout.setHintEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mBirthYearEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mBirthYearTextLayout.setError(null);
+                mBirthYearTextLayout.setHintEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mAcceptanceDateEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mAcceptanceDateTextLayout.setError(null);
+                mAcceptanceDateTextLayout.setHintEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mContactNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mContactNumberTextLayout.setError(null);
+                mContactNumberTextLayout.setHintEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mSummaryEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mSummaryTextLayout.setError(null);
+                mSummaryTextLayout.setHintEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void showDataOnActivity() {
@@ -186,73 +346,73 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mStatusSpinner.setAdapter(statusSpinnerAdapter);
         mSterilizedSpinner.setAdapter(sterilizedSpinnerAdapter);
 
-        if(isExistingPetFlag){
+        if (isExistingPetFlag) {
             String currentStringResource;
             //species
-            if(mPet.getmSpecies() == PetEntry.SPECIES_DOG){
+            if (mPet.getmSpecies() == PetEntry.SPECIES_DOG) {
                 currentStringResource = getString(R.string.species_dog);
-            }else{
+            } else {
                 currentStringResource = getString(R.string.species_cat);
             }
 
-            for(int i=0; i < speciesSpinnerAdapter.getCount(); i++) {
-                if(currentStringResource.trim().equals(speciesSpinnerAdapter.getItem(i).toString())){
+            for (int i = 0; i < speciesSpinnerAdapter.getCount(); i++) {
+                if (currentStringResource.trim().equals(speciesSpinnerAdapter.getItem(i).toString())) {
                     mSpeciesSpinner.setSelection(i);
                     break;
                 }
             }
             //gender
-            if(mPet.getmGender() == PetEntry.GENDER_MALE){
+            if (mPet.getmGender() == PetEntry.GENDER_MALE) {
                 currentStringResource = getString(R.string.gender_male);
-            }else{
+            } else {
                 currentStringResource = getString(R.string.gender_female);
             }
 
-            for(int i=0; i < genderSpinnerAdapter.getCount(); i++) {
-                if(currentStringResource.trim().equals(genderSpinnerAdapter.getItem(i).toString())){
+            for (int i = 0; i < genderSpinnerAdapter.getCount(); i++) {
+                if (currentStringResource.trim().equals(genderSpinnerAdapter.getItem(i).toString())) {
                     mGenderSpinner.setSelection(i);
                     break;
                 }
             }
             //height
-            if(mPet.getmHeight() == PetEntry.HEIGHT_SMALL){
+            if (mPet.getmHeight() == PetEntry.HEIGHT_SMALL) {
                 currentStringResource = getString(R.string.height_small);
-            }else if(mPet.getmHeight() == PetEntry.HEIGHT_MEDIUM){
+            } else if (mPet.getmHeight() == PetEntry.HEIGHT_MEDIUM) {
                 currentStringResource = getString(R.string.height_medium);
-            } else{
+            } else {
                 currentStringResource = getString(R.string.height_big);
             }
 
-            for(int i=0; i < heightSpinnerAdapter.getCount(); i++) {
-                if(currentStringResource.trim().equals(heightSpinnerAdapter.getItem(i).toString())){
+            for (int i = 0; i < heightSpinnerAdapter.getCount(); i++) {
+                if (currentStringResource.trim().equals(heightSpinnerAdapter.getItem(i).toString())) {
                     mHeightSpinner.setSelection(i);
                     break;
                 }
             }
             //status
-            if(mPet.getmStatus() == PetEntry.STATUS_ADOPTABLE){
+            if (mPet.getmStatus() == PetEntry.STATUS_ADOPTABLE) {
                 currentStringResource = getString(R.string.status_adoptable);
-            }else if(mPet.getmStatus() == PetEntry.STATUS_QUARANTINE){
+            } else if (mPet.getmStatus() == PetEntry.STATUS_QUARANTINE) {
                 currentStringResource = getString(R.string.status_quarantine);
-            } else{
+            } else {
                 currentStringResource = getString(R.string.status_booked);
             }
 
-            for(int i=0; i < statusSpinnerAdapter.getCount(); i++) {
-                if(currentStringResource.trim().equals(statusSpinnerAdapter.getItem(i).toString())){
+            for (int i = 0; i < statusSpinnerAdapter.getCount(); i++) {
+                if (currentStringResource.trim().equals(statusSpinnerAdapter.getItem(i).toString())) {
                     mStatusSpinner.setSelection(i);
                     break;
                 }
             }
             //sterilized
-            if(mPet.getmSterilized() == PetEntry.STERILIZED_YES){
+            if (mPet.getmSterilized() == PetEntry.STERILIZED_YES) {
                 currentStringResource = getString(R.string.sterilized_yes);
-            }else{
+            } else {
                 currentStringResource = getString(R.string.sterilized_no);
             }
 
-            for(int i=0; i < sterilizedSpinnerAdapter.getCount(); i++) {
-                if(currentStringResource.trim().equals(sterilizedSpinnerAdapter.getItem(i).toString())){
+            for (int i = 0; i < sterilizedSpinnerAdapter.getCount(); i++) {
+                if (currentStringResource.trim().equals(sterilizedSpinnerAdapter.getItem(i).toString())) {
                     mSterilizedSpinner.setSelection(i);
                     break;
                 }
@@ -420,8 +580,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
     }
 
-
     private void savePet() {
+
+        codeString = mCodeEditText.getText().toString().trim();
+        nameString = mNameEditText.getText().toString().trim();
+        breedString = mBreedEditText.getText().toString().trim();
+        summaryString = mSummaryEditText.getText().toString().trim();
+        birthYearString = mBirthYearEditText.getText().toString().trim();
+        acceptanceDateString = mAcceptanceDateEditText.getText().toString().trim();
+        contactNumberString = mContactNumberEditText.getText().toString().trim();
+
+        if(!isCorrect()){
+            return;
+        }
 
         ringProgressDialog = ProgressDialog.show(
                 EditorActivity.this,
@@ -430,24 +601,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 true);
         //you usually don't want the user to stop the current process, and this will make sure of that
         ringProgressDialog.setCancelable(false);
-
-        String codeString = mCodeEditText.getText().toString().trim();
-        String nameString = mNameEditText.getText().toString().trim();
-        String breedString = mBreedEditText.getText().toString().trim();
-        String summaryString = mSummaryEditText.getText().toString().trim();
-        String birthYearString = mBirthYearEditText.getText().toString().trim();
-        String acceptanceDateString = mAcceptanceDateEditText.getText().toString().trim();
-        String contactNumberString = mContactNumberEditText.getText().toString().trim();
-
-
-        if (mPet == null &&
-                TextUtils.isEmpty(codeString) && TextUtils.isEmpty(nameString) &&
-                TextUtils.isEmpty(breedString) && TextUtils.isEmpty(summaryString) &&
-                TextUtils.isEmpty(birthYearString) && TextUtils.isEmpty(acceptanceDateString) &&
-                TextUtils.isEmpty(contactNumberString)) {
-            ringProgressDialog.hide();
-            return;
-        }
 
         // Determine if this is a new or existing pet by checking if mCurrentPetUri is null or not
         if (mPet == null) {
@@ -460,14 +613,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (mResultUri != null) {
             imageUrl = mResultUri.toString();
             isUploadingImage = true;
-        } else if(isExistingPetFlag) {
+        } else if (isExistingPetFlag) {
             imageUrl = mPet.getmImageUrl();
         }
 
-        if(isExistingPetFlag){
+        if (isExistingPetFlag) {
             mPet = new Pet(mPet.getmId(), mSpecies, codeString, nameString, mStatus, mGender,
                     mHeight, birthYearString, acceptanceDateString, mSterilized, summaryString, imageUrl, breedString, contactNumberString);
-        } else{
+        } else {
             mPet = new Pet(mSpecies, codeString, nameString, mStatus, mGender, mHeight,
                     birthYearString, acceptanceDateString, mSterilized, summaryString, imageUrl, breedString, contactNumberString);
         }
@@ -475,6 +628,57 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         loaderManager.initLoader(2, null, this);
 
 
+    }
+
+    private boolean isCorrect() {
+
+        boolean flag = true;
+
+        if (TextUtils.isEmpty(codeString) || TextUtils.isEmpty(nameString) ||
+                TextUtils.isEmpty(summaryString) || TextUtils.isEmpty(birthYearString) ||
+                TextUtils.isEmpty(acceptanceDateString) || TextUtils.isEmpty(contactNumberString)) {
+
+            Toast.makeText(this, getString(R.string.fill_blank_fields), Toast.LENGTH_SHORT).show();
+            flag = false;
+        }
+
+        if (TextUtils.isEmpty(codeString)) {
+            mCodeEditTextLayout.setError(getString(R.string.code_cant_be_empty));
+            mCodeEditTextLayout.setHintEnabled(false);
+            flag = false;
+        }
+
+        if (TextUtils.isEmpty(nameString)) {
+            mNameEditTextLayout.setError(getString(R.string.name_cant_be_empty));
+            mNameEditTextLayout.setHintEnabled(false);
+            flag = false;
+        }
+
+        if (TextUtils.isEmpty(summaryString)) {
+            mSummaryTextLayout.setError(getString(R.string.summary_cant_be_empty));
+            mSummaryTextLayout.setHintEnabled(false);
+            flag = false;
+        }
+
+        if (TextUtils.isEmpty(birthYearString)) {
+            mBirthYearTextLayout.setError(getString(R.string.birth_year_cant_be_empty));
+            mBirthYearTextLayout.setHintEnabled(false);
+            flag = false;
+        }
+
+        if (TextUtils.isEmpty(acceptanceDateString)) {
+            mAcceptanceDateTextLayout.setError(getString(R.string.acceptance_date_cant_be_empty));
+            mAcceptanceDateTextLayout.setHintEnabled(false);
+            flag = false;
+        }
+
+        if (TextUtils.isEmpty(contactNumberString)) {
+            mContactNumberTextLayout.setError(getString(R.string.contact_number_cant_be_empty));
+            mContactNumberTextLayout.setHintEnabled(false);
+            flag = false;
+        }
+
+        return flag;
     }
 
 
@@ -517,7 +721,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             android.os.Debug.waitForDebugger();
         mPet = addedPet;
 
-        if(isExistingPetFlag){
+        if (isExistingPetFlag) {
 
         }
         // Show a toast message depending on whether or not the insertion was successful.

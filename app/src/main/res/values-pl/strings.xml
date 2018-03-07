@@ -65,4 +65,15 @@
     <string name="breed">Rasa</string>
     <string name="contact_number">Numer kontaktowy</string>
     <string name="sterilization">Sterylizacja</string>
+    <string name="email_not_found">E-mail nie istnieje w bazie</string>
+    <string name="wrong_password">Złe hasło</string>
+    <string name="login_successful">Zalogowano pomyślnie</string>
+    <string name="fill_blank_fields">Uzupełnij pola</string>
+    <string name="code_cant_be_empty">Kod jest wymagany</string>
+    <string name="name_cant_be_empty">Imię jest wymagane</string>
+    <string name="summary_cant_be_empty">Opis jest wymagany</string>
+    <string name="birth_year_cant_be_empty">Rok urodzenia jest wymagany</string>
+    <string name="acceptance_date_cant_be_empty">Data przyjęcia jest wymagana</string>
+    <string name="contact_number_cant_be_empty">Numer kontaktowy jest wymagany</string>
+    <string name="logging">Logowanie</string>
 </resources>

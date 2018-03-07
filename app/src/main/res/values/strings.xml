@@ -78,6 +78,14 @@
     <string name="email_not_found">Email not found in database</string>
     <string name="wrong_password">Wrong password</string>
     <string name="login_successful">Login successful</string>
+    <string name="fill_blank_fields">Fill blank fields</string>
+    <string name="code_cant_be_empty">Code is required</string>
+    <string name="name_cant_be_empty">Name can\'t be empty</string>
+    <string name="summary_cant_be_empty">Summary can\'t be empty</string>
+    <string name="birth_year_cant_be_empty">Birth year can\'t be empty</string>
+    <string name="acceptance_date_cant_be_empty">Acceptance date can\'t be empty</string>
+    <string name="contact_number_cant_be_empty">Contact number can\'t be empty</string>
+    <string name="logging">Logging</string>
 
 
 </resources>
