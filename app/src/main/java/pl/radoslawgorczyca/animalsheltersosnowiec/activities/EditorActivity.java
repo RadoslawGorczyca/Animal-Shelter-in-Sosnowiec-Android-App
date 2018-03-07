@@ -3,6 +3,8 @@ package pl.radoslawgorczyca.animalsheltersosnowiec.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,6 +26,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,6 +38,8 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.w3c.dom.Text;
+
+import java.util.Calendar;
 
 import pl.radoslawgorczyca.animalsheltersosnowiec.types.Pet;
 import pl.radoslawgorczyca.animalsheltersosnowiec.loaders.PetPostLoader;
@@ -81,6 +86,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private TextInputLayout mSummaryTextLayout;
     private TextInputEditText mBirthYearEditText;
     private TextInputLayout mBirthYearTextLayout;
+    private ImageButton mPickDateImageButton;
     private TextInputEditText mAcceptanceDateEditText;
     private TextInputLayout mAcceptanceDateTextLayout;
     private TextInputEditText mContactNumberEditText;
@@ -99,6 +105,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     String birthYearString;
     String acceptanceDateString;
     String contactNumberString;
+
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+
+    static final int DATE_DIALOG_ID = 0;
 
     private boolean mPetHasChanged = false;
 
@@ -146,6 +158,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSummaryTextLayout = findViewById(R.id.edit_pet_summary_layout);
         mBirthYearEditText = findViewById(R.id.edit_pet_birth_year);
         mBirthYearTextLayout = findViewById(R.id.edit_pet_birth_year_layout);
+        mPickDateImageButton = findViewById(R.id.edit_pick_date);
         mAcceptanceDateEditText = findViewById(R.id.edit_pet_acceptance_date);
         mAcceptanceDateTextLayout = findViewById(R.id.edit_pet_acceptance_date_layout);
         mContactNumberEditText = findViewById(R.id.edit_pet_contact_number);
@@ -166,6 +179,53 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         setupSpinners();
 
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        updateDisplay();
+
+        mPickDateImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(DATE_DIALOG_ID);
+            }
+        });
+
+
+    }
+
+    private void updateDisplay() {
+        this.mAcceptanceDateEditText.setText(
+                new StringBuilder()
+                .append(mDay).append(".")
+                .append(mMonth +1).append(".")
+                .append(mYear).append(" "));
+    }
+
+    private DatePickerDialog.OnDateSetListener mDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+                    mYear = year;
+                    mMonth = monthOfYear;
+                    mDay = dayOfMonth;
+                    updateDisplay();
+                }
+            };
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                DatePickerDialog dialog = new DatePickerDialog(this,
+                        mDateSetListener,
+                        mYear, mMonth, mDay);
+                dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                return dialog;
+        }
+        return null;
     }
 
     private void setupInputListeners() {
@@ -566,16 +626,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 CropImage.startPickImageActivity(this);
-            } else {
-                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
             }
         }
         if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
             if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // required permissions granted, start crop image activity
                 startCropImageActivity(mCropImageUri);
-            } else {
-                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
             }
         }
     }

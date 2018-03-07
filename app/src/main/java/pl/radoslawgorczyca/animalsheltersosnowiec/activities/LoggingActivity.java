@@ -106,13 +106,17 @@ public class LoggingActivity extends AppCompatActivity implements LoaderManager.
             if(!fetchedDecryptedPassword.equals(password)){
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(this, R.string.login_successful, Toast.LENGTH_SHORT).show();
+
                 session.createUserLoginSession(fetchedUser.getEmail(), fetchedUser.getPassword(), fetchedUser.getName(), fetchedUser.getSurname());
                 editor.putString("name", fetchedUser.getName());
                 editor.putString("surname", fetchedUser.getSurname());
                 editor.putString("email",fetchedUser.getEmail());
                 editor.putString("password",fetchedUser.getPassword());
                 editor.commit();
+
+                String name = sharedPreferences.getString(UserSession.KEY_NAME, null);
+                String surname = sharedPreferences.getString(UserSession.KEY_SURNAME, null);
+                Toast.makeText(this, getString(R.string.hello) + " " + name + " " + surname, Toast.LENGTH_SHORT).show();
                 finish();
             }
         }

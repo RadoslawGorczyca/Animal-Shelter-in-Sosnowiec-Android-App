@@ -32,7 +32,7 @@
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="no_internet_connection">Brak połączenia z internetem</string>
-    <string name="no_pets_found">Brak zwierząt</string>
+    <string name="no_pets_found">Nie znaleziono zwierząt</string>
     <string name="sterilized_yes">Tak</string>
     <string name="sterilized_no">Nie</string>
     <string name="delete">Usuń</string>

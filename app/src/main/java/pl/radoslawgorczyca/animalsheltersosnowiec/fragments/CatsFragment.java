@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,11 +38,15 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private static final int PET_LOADER = 1;
 
+    private SwipeRefreshLayout swipeContainer;
+
     private PetAdapter mAdapter;
     private TextView mEmptyStateTextView;
     private ProgressBar mProgressIndicator;
     GridView petGridView;
     public static Parcelable state;
+
+    private boolean isLoaderInitialized = false;
 
 
     @Override
@@ -67,7 +72,23 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
         });
 
         mEmptyStateTextView = rootView.findViewById(R.id.empty_state);
+        swipeContainer = rootView.findViewById(R.id.swipe_container);
         petGridView.setEmptyView(mEmptyStateTextView);
+
+        swipeContainer.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mEmptyStateTextView.setText("");
+                if(!isLoaderInitialized){
+                    getLoaderManager().initLoader(PET_LOADER, null, CatsFragment.this);
+                    isLoaderInitialized = true;
+                }else {
+                    getLoaderManager().restartLoader(PET_LOADER, null, CatsFragment.this);
+                }
+            }
+        });
 
         mProgressIndicator = rootView.findViewById(R.id.progress_indicator);
 
@@ -97,6 +118,7 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public android.support.v4.content.Loader<List<Pet>> onCreateLoader(int id, Bundle args) {
+        isLoaderInitialized = true;
         Uri baseUri = Uri.parse(PetContract.SHELTER_REQUEST_URL);
         return new PetLoader(getActivity(), baseUri.toString());
     }
@@ -104,6 +126,7 @@ public class CatsFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<List<Pet>> loader, List<Pet> pets) {
         mProgressIndicator.setVisibility(View.GONE);
+        swipeContainer.setRefreshing(false);
         mAdapter.clear();
 
         if (pets != null && !pets.isEmpty()) {
