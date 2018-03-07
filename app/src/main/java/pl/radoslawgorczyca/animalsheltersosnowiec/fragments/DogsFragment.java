@@ -84,6 +84,7 @@ public class DogsFragment extends Fragment implements LoaderManager.LoaderCallba
             @Override
             public void onRefresh() {
                 mEmptyStateTextView.setText("");
+                state = null;
                 if(!isLoaderInitialized){
                     getLoaderManager().initLoader(PET_LOADER, null, DogsFragment.this);
                     isLoaderInitialized = true;

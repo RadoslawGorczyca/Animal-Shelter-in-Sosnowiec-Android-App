@@ -168,16 +168,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         loaderManager = getSupportLoaderManager();
 
-        if (!isExistingPetFlag) {
-            setTitle(getString(R.string.editor_activity_title_new_pet));
-            invalidateOptionsMenu();
-        } else {
-            setTitle(getString(R.string.editor_activity_title_edit_pet));
-            invalidateOptionsMenu();
-            showDataOnActivity();
-        }
-
-        setupSpinners();
 
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
@@ -193,7 +183,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
+        if (!isExistingPetFlag) {
+            setTitle(getString(R.string.editor_activity_title_new_pet));
+            invalidateOptionsMenu();
+        } else {
+            setTitle(getString(R.string.editor_activity_title_edit_pet));
+            invalidateOptionsMenu();
+            showDataOnActivity();
+        }
 
+        setupSpinners();
     }
 
     private void updateDisplay() {
